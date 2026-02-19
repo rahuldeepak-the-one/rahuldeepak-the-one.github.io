@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-slate-base: #0f172a;
+  --color-slate-card: #1e293b;
+  --color-orange: #f97316;
+  --color-ubuntu: #f97316;
+  
+  --font-ubuntu-mono: "Ubuntu Sans Mono", monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-slate-base);
+    color: white;
+    font-family: var(--font-ubuntu-mono);
+  }
+}
+
+@layer components {
+  .terminal-prefix::before {
+    content: "$ ";
+    color: var(--color-orange);
+    margin-right: 0.5rem;
+  }
+
+  .terminal-prefix-gt::before {
+    content: "> ";
+    color: var(--color-orange);
+    margin-right: 0.5rem;
+  }
+
+  .nvidia-glow {
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .nvidia-glow:hover {
+    box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+  }
+}
