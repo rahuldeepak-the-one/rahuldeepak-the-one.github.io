@@ -4,24 +4,27 @@ const experiences = [
     {
         company: "Avathon",
         role: "Software Development Engineer",
-        duration: "Present",
-        description: "Optimizing AI inference pipelines for large-scale computer vision systems.",
+        duration: "Jul 2025 – Present",
+        description: "Architecting and optimizing edge AI inference pipelines for large-scale video analytics systems using NVIDIA DeepStream and Triton.",
         highlights: [
-            "Achieved <span class='text-[var(--color-orange)] font-bold'>40% inference speedup</span> using NVIDIA DeepStream, TensorRT, and custom C++ plugins.",
-            "Engineered low-latency video processing pipelines for real-time analytics.",
-            "Integrated multi-stream decoding and inference on edge devices."
+            "Achieved <span class='text-[var(--color-orange)] font-bold'>40% inference speedup</span> using NVIDIA DeepStream 9.0, TensorRT, and custom C++ plugins.",
+            "Designed modular multi-source GStreamer pipelines with <span class='text-[var(--color-orange)] font-bold'>YAML-driven configuration</span> and dynamic RTSP source management.",
+            "Architected Triton Inference Server migration from embedded nvinfer to <span class='text-[var(--color-orange)] font-bold'>gRPC-based nvinferserver</span>, enabling zero-downtime model updates.",
+            "Built automated <span class='text-[var(--color-orange)] font-bold'>YOLO benchmarking framework</span> evaluating YOLOv8/YOLO26 across n/s/m scales on RTX 3060 edge GPUs.",
+            "Replaced blocking infinite-retry API loops with <span class='text-[var(--color-orange)] font-bold'>exponential backoff</span> and implemented boundary-safe OpenCV processing for pipeline resilience.",
+            "Engineered end-to-end <span class='text-[var(--color-orange)] font-bold'>Kafka-based VSS alert pipeline</span> with containerized consumers and edge device integration."
         ],
-        tech: ["C++", "DeepStream", "TensorRT", "CUDA", "Python"]
+        tech: ["C++", "DeepStream 9.0", "TensorRT", "Triton", "GStreamer", "CUDA", "Kafka", "Python", "Meson", "ONNX"]
     },
     {
         company: "Hilti",
         role: "Software Intern",
         duration: "Past",
-        description: "Streamlined deployment workflows and enhanced developer productivity.",
+        description: "Streamlined deployment workflows and enhanced developer productivity for enterprise microservices.",
         highlights: [
             "Architected a CI/CD pipeline that reduced deployment time from <span class='text-[var(--color-orange)] font-bold'>2 hours to 10 minutes (91% reduction)</span>.",
-            "Automated testing and release processes for microservices.",
-            "Collaborated with cross-functional teams to improve system reliability."
+            "Automated testing and release processes for microservices across distributed environments.",
+            "Collaborated with cross-functional teams to improve system reliability and reduce incident resolution time."
         ],
         tech: ["CI/CD", "Docker", "Kubernetes", "Bash", "Linux"]
     }

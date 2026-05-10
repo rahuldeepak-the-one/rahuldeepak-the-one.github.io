@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaGithub, FaLinkedin, FaEnvelope, FaCopy } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     const [emailCopied, setEmailCopied] = useState(false);
@@ -26,11 +27,11 @@ const Footer = () => {
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-6">
-                    <a href="#" className="text-slate-400 hover:text-[var(--color-orange)] transition-colors">
+                <div className="flex gap-6 items-center">
+                    <a href="https://github.com/rahuldeepak-the-one" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[var(--color-orange)] transition-colors">
                         <FaGithub size={24} />
                     </a>
-                    <a href="#" className="text-slate-400 hover:text-[var(--color-orange)] transition-colors">
+                    <a href="https://www.linkedin.com/in/rahul-deepak-kuchipudi-b4322825a" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[var(--color-orange)] transition-colors">
                         <FaLinkedin size={24} />
                     </a>
                     <button

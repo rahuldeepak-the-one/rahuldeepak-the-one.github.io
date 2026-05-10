@@ -3,18 +3,23 @@ import { motion } from "framer-motion";
 const skillCategories = [
     {
         title: "Languages",
-        skills: ["C++", "Python", "C", "Bash", "SQL"],
+        skills: ["C++", "Python", "C", "JavaScript", "Bash", "SQL"],
         delay: 0
     },
     {
         title: "AI & Computer Vision",
-        skills: ["DeepStream", "TensorRT", "CUDA", "PyTorch", "TensorFlow"],
-        delay: 0.2
+        skills: ["DeepStream", "TensorRT", "Triton", "CUDA", "PyTorch", "TensorFlow", "ONNX", "YOLO", "GStreamer"],
+        delay: 0.15
     },
     {
         title: "Systems & DevOps",
-        skills: ["Docker", "Linux", "CI/CD", "GPU Programming", "Git"],
-        delay: 0.4
+        skills: ["Docker", "Kubernetes", "Linux", "CI/CD", "Kafka", "GPU Programming", "Meson", "Git", "Nginx"],
+        delay: 0.3
+    },
+    {
+        title: "Web & Full Stack",
+        skills: ["React", "Vite", "Node.js", "PostgreSQL", "WebSocket", "REST APIs"],
+        delay: 0.45
     }
 ];
 
@@ -34,7 +39,7 @@ const Skills = () => {
                     </h3>
 
                     <div className="flex flex-wrap gap-4">
-                        {category.skills.map((skill, i) => (
+                        {category.skills.map((skill) => (
                             <motion.div
                                 key={skill}
                                 whileHover={{ scale: 1.05 }}
