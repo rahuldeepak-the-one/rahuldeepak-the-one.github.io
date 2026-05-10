@@ -50,7 +50,7 @@ const HomePage = () => (
         <Section id="contact" title="Connect">
             <div className="text-center max-w-2xl mx-auto">
                 <p className="text-xl text-slate-300 mb-8">
-                    Open to opportunities in AI/ML, Systems Engineering, and Full Stack Development.
+                    Open to opportunities in AI/ML and Systems Engineering.
                 </p>
                 <a
                     href="mailto:rahuldeepak.k.11@gmail.com"
