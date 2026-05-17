@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaCopy } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaCopy, FaFileDownload } from "react-icons/fa";
 import profileAvatar from "../assets/profile_avatar.png";
 
 const roles = [
     "Software Development Engineer @ Avathon",
     "Computer Science @ IIT Bombay",
     "AI/ML & CV Specialist",
-    "Edge AI Pipeline Architect",
+    "Edge AI Pipeline Engineer",
 ];
 
 const Hero = () => {
@@ -121,6 +121,16 @@ const Hero = () => {
                             </a>
 
                             <a
+                                href="/resume.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
+                            >
+                                <FaFileDownload className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                                Resume
+                            </a>
+
+                            <a
                                 href="https://github.com/rahuldeepak-the-one"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -128,6 +138,16 @@ const Hero = () => {
                             >
                                 <FaGithub className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
                                 GitHub
+                            </a>
+
+                            <a
+                                href="https://www.linkedin.com/in/rahul-deepak-kuchipudi-b4322825a"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
+                            >
+                                <FaLinkedin className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                                LinkedIn
                             </a>
 
                             <button

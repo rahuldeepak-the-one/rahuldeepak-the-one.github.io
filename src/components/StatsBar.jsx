@@ -5,7 +5,7 @@ const stats = [
     { label: "FPS Optimized", value: 142, suffix: "+", icon: "⚡" },
     { label: "Inference Speedup", value: 40, suffix: "%", icon: "🚀" },
     { label: "Camera Streams", value: 8, suffix: "+", icon: "📷" },
-    { label: "Deploy Time Cut", value: 91, suffix: "%", icon: "🔧" },
+    { label: "Edge Sites", value: 10, suffix: "+", icon: "🛰️" },
 ];
 
 const AnimatedCounter = ({ target, duration = 2000 }) => {

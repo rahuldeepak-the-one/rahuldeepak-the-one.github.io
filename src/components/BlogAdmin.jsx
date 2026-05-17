@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaTrash, FaEdit, FaSave, FaLock, FaEye } from "react-icons/fa";
 
-const ADMIN_PASSWORD = "rahul2026";
+const ADMIN_PASSWORD = import.meta.env.VITE_BLOG_ADMIN_PASSWORD || "";
 const STORAGE_KEY = "blog_admin_posts";
 
 const BlogAdmin = () => {
@@ -28,6 +28,10 @@ const BlogAdmin = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
+        if (!ADMIN_PASSWORD) {
+            setError("Admin is disabled in this build. Set VITE_BLOG_ADMIN_PASSWORD locally to use it.");
+            return;
+        }
         if (password === ADMIN_PASSWORD) {
             setAuthenticated(true);
             setError("");

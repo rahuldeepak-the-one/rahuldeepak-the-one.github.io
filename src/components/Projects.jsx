@@ -21,29 +21,29 @@ const projects = [
         glow: "hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]"
     },
     {
-        title: "Precancerous Lesion Detection",
+        title: "Semi-Supervised Skin Lesion Classification",
         category: "AI/ML",
-        description: "Deep learning model for early cancer detection using ResNet-50 architecture on histopathology data.",
-        tech: ["PyTorch", "ResNet-50", "Computer Vision", "Python"],
-        stats: "High Accuracy on Histopathology Data",
+        description: "MixMatch-based semi-supervised learning with ResNet-50 for 7-class skin cancer classification on 10,000 dermatoscopic images.",
+        tech: ["PyTorch", "ResNet-50", "MixMatch", "Python"],
+        stats: "69% Accuracy · F1 0.65",
         color: "border-blue-500/50 hover:border-blue-500",
         glow: "hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
     },
     {
         title: "XV6Plus OS",
         category: "Systems Engineering",
-        description: "Extended the XV6 operating system with Copy-on-Write, priority scheduling, and advanced kernel features.",
+        description: "Extended MIT's XV6 kernel in C with virtual memory + demand paging, POSIX-compliant threads with context switching, and semaphore/mutex-based synchronisation.",
         tech: ["C", "Assembly", "Virtual Memory", "POSIX Threads"],
-        stats: "Implemented CoW & Priority Scheduling",
+        stats: "Kernel extensions for VM, threads, sync",
         color: "border-[var(--color-orange)]/50 hover:border-[var(--color-orange)]",
         glow: "hover:shadow-[0_0_20px_rgba(249,115,22,0.5)]"
     },
     {
         title: "Fast Chat",
         category: "Full Stack Software",
-        description: "Scalable real-time messaging application with load balancing and WebSocket connections.",
-        tech: ["Python", "PostgreSQL", "WebSocket", "Nginx"],
-        stats: "Handles 10k+ Concurrent Connections",
+        description: "Real-time group messaging with image sharing over Python sockets, PostgreSQL-backed history, server-side load balancing, and end-to-end encryption.",
+        tech: ["Python", "PostgreSQL", "Sockets", "Load Balancing"],
+        stats: "Group chat with E2E auth + load balancing",
         color: "border-emerald-500/50 hover:border-emerald-500",
         glow: "hover:shadow-[0_0_20px_rgba(16,185,129,0.5)]"
     }

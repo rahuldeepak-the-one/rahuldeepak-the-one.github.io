@@ -5,28 +5,30 @@ const experiences = [
         company: "Avathon",
         role: "Software Development Engineer",
         duration: "Jul 2025 – Present",
-        description: "Architecting and optimizing edge AI inference pipelines for large-scale video analytics systems using NVIDIA DeepStream and Triton.",
+        location: "Bengaluru, India",
+        description: "Owning the ground-up rewrite of IRIS, Avathon's production video-analytics platform, on DeepStream 6.2 → 9.0 with vLLM-based VSS integration.",
         highlights: [
-            "Achieved <span class='text-[var(--color-orange)] font-bold'>40% inference speedup</span> using NVIDIA DeepStream 9.0, TensorRT, and custom C++ plugins.",
-            "Designed modular multi-source GStreamer pipelines with <span class='text-[var(--color-orange)] font-bold'>YAML-driven configuration</span> and dynamic RTSP source management.",
-            "Architected Triton Inference Server migration from embedded nvinfer to <span class='text-[var(--color-orange)] font-bold'>gRPC-based nvinferserver</span>, enabling zero-downtime model updates.",
-            "Built automated <span class='text-[var(--color-orange)] font-bold'>YOLO benchmarking framework</span> evaluating YOLOv8/YOLO26 across n/s/m scales on RTX 3060 edge GPUs.",
-            "Replaced blocking infinite-retry API loops with <span class='text-[var(--color-orange)] font-bold'>exponential backoff</span> and implemented boundary-safe OpenCV processing for pipeline resilience.",
-            "Engineered end-to-end <span class='text-[var(--color-orange)] font-bold'>Kafka-based VSS alert pipeline</span> with containerized consumers and edge device integration."
+            "<span class='text-[var(--color-orange)] font-bold'>Owning rewrite</span> of the IRIS pipeline (DeepStream 6.2 → 9.0) — C++/GStreamer core, dynamic bundler, MQTT cloud integration, and use-case modules (door, svm-cv, hse-cv) deployed across 10+ edge sites.",
+            "Architected <span class='text-[var(--color-orange)] font-bold'>VSS (Video Summarization Service)</span> integrating vLLM-served VLMs and LLMs via Kafka for real-time scene understanding with configurable summarisation prompts.",
+            "Diagnosed and fixed cross-version <span class='text-[var(--color-orange)] font-bold'>memory leaks across DS6.2 and DS8</span> (GLib vs raw-malloc <code>classifier_type</code> regression; <code>opTensorFilePath</code> leak).",
+            "Decoupled TensorRT engine <span class='text-[var(--color-orange)] font-bold'>batch-size from camera count</span>, eliminating full engine rebuilds on fleet changes.",
+            "Achieved <span class='text-[var(--color-orange)] font-bold'>40% inference speedup</span> via TensorRT FP16/INT8, batched preprocessing, and zero-copy NvBufSurface buffers; authored C++ plugins for NV12 → BGR and per-frame metadata.",
+            "Built automated <span class='text-[var(--color-orange)] font-bold'>DS9 + Triton benchmark harness</span> (pyservicemaker, pynvml) reporting FPS/latency/GPU-memory across YOLOv8 and YOLO26 on RTX 3060.",
+            "Hardened reliability: exponential-backoff retry replacing blocking loops, boundary-safe OpenCV preventing <code>cv::Rect</code> crashes, PTS-vs-wall-clock fix in frame sampling."
         ],
-        tech: ["C++", "DeepStream 9.0", "TensorRT", "Triton", "GStreamer", "CUDA", "Kafka", "Python", "Meson", "ONNX"]
+        tech: ["C++", "DeepStream 6.2→9.0", "TensorRT", "Triton", "vLLM", "GStreamer", "CUDA", "Kafka", "Python", "Docker"]
     },
     {
-        company: "Hilti",
-        role: "Software Intern",
-        duration: "Past",
-        description: "Streamlined deployment workflows and enhanced developer productivity for enterprise microservices.",
+        company: "Hilti Technology Solutions",
+        role: "Software Developer Intern",
+        duration: "May 2024 – Jul 2024",
+        location: "Pune, India",
+        description: "Automated MSI release engineering and built regression-test infrastructure for enterprise web applications.",
         highlights: [
-            "Architected a CI/CD pipeline that reduced deployment time from <span class='text-[var(--color-orange)] font-bold'>2 hours to 10 minutes (91% reduction)</span>.",
-            "Automated testing and release processes for microservices across distributed environments.",
-            "Collaborated with cross-functional teams to improve system reliability and reduce incident resolution time."
+            "Built a <span class='text-[var(--color-orange)] font-bold'>CI/CD pipeline (GitLab CI + Docker + WiX Toolset)</span> for MSI installer creation, reducing deployment time from 2 hours to 10 minutes.",
+            "Developed <span class='text-[var(--color-orange)] font-bold'>Selenium WebDriver</span> automated test scripts in C# with the Page Object Model pattern for the Firestop Solutions web app."
         ],
-        tech: ["CI/CD", "Docker", "Kubernetes", "Bash", "Linux"]
+        tech: ["GitLab CI", "Docker", "WiX Toolset", "Selenium", "C#", "Bash"]
     }
 ];
 
@@ -55,6 +57,12 @@ const Experience = () => {
                             <span className="font-mono text-xs border border-slate-700 px-2 py-0.5 rounded">
                                 {exp.duration}
                             </span>
+                            {exp.location && (
+                                <>
+                                    <span>•</span>
+                                    <span className="text-slate-500">{exp.location}</span>
+                                </>
+                            )}
                         </div>
                     </div>
 

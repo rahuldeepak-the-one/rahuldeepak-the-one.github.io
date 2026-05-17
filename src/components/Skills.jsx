@@ -15,11 +15,6 @@ const skillCategories = [
         title: "Systems & DevOps",
         skills: ["Docker", "Kubernetes", "Linux", "CI/CD", "Kafka", "GPU Programming", "Meson", "Git", "Nginx"],
         delay: 0.3
-    },
-    {
-        title: "Web & Full Stack",
-        skills: ["React", "Vite", "Node.js", "PostgreSQL", "WebSocket", "REST APIs"],
-        delay: 0.45
     }
 ];
 
