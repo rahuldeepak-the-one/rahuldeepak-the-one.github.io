@@ -29,21 +29,20 @@ const Skills = () => {
                     viewport={{ once: true }}
                     transition={{ delay: category.delay }}
                 >
-                    <h3 className="text-xl font-bold text-white mb-6 border-l-4 border-[var(--color-orange)] pl-3">
+                    <h3 className="font-display text-xl font-bold text-white mb-6 border-l-4 border-[var(--color-orange)] pl-3">
                         {category.title}
                     </h3>
 
-                    <div className="flex flex-wrap gap-4">
+                    <ul className="flex flex-wrap gap-3 list-none">
                         {category.skills.map((skill) => (
-                            <motion.div
+                            <li
                                 key={skill}
-                                whileHover={{ scale: 1.05 }}
-                                className="nvidia-glow bg-slate-800/80 px-4 py-2 rounded text-slate-300 font-mono text-sm border border-slate-700 hover:text-white hover:border-[var(--color-orange)] transition-colors cursor-default"
+                                className="bg-[var(--color-panel)]/70 px-4 py-2 rounded text-slate-300 font-mono text-sm border border-[var(--color-edge)]"
                             >
                                 {skill}
-                            </motion.div>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 </motion.div>
             ))}
         </div>

@@ -38,9 +38,10 @@ const Navbar = () => {
         const element = document.querySelector(href);
         if (element) {
             const offsetTop = element.offsetTop - 80;
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             window.scrollTo({
                 top: offsetTop,
-                behavior: "smooth",
+                behavior: prefersReducedMotion ? "auto" : "smooth",
             });
             setIsOpen(false);
         }
@@ -53,7 +54,7 @@ const Navbar = () => {
                     key={link.name}
                     to={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`text-slate-300 hover:text-[var(--color-orange)] transition-colors text-sm font-medium ${
+                    className={`py-2 text-slate-300 hover:text-[var(--color-orange)] transition-colors text-sm font-medium ${
                         location.pathname === link.href ? "text-[var(--color-orange)]" : ""
                     }`}
                 >
@@ -66,7 +67,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className="text-slate-300 hover:text-[var(--color-orange)] transition-colors text-sm font-medium"
+                className="py-2 text-slate-300 hover:text-[var(--color-orange)] transition-colors text-sm font-medium"
             >
                 {link.name}
             </a>
@@ -126,9 +127,11 @@ const Navbar = () => {
                 <div className="md:hidden">
                     <button
                         onClick={toggleMenu}
-                        className="text-white focus:outline-none hover:text-[var(--color-orange)] transition-colors"
+                        aria-label={isOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={isOpen}
+                        className="p-2 -mr-2 text-white hover:text-[var(--color-orange)] transition-colors"
                     >
-                        {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                        {isOpen ? <FaTimes size={24} aria-hidden="true" /> : <FaBars size={24} aria-hidden="true" />}
                     </button>
                 </div>
             </div>

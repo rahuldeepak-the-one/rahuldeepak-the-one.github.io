@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaCopy, FaFileDownload } from "react-icons/fa";
+import { motion, useReducedMotion } from "framer-motion";
+import { FaGithub, FaLinkedin, FaEnvelope, FaCopy, FaFileDownload, FaTrophy, FaGraduationCap } from "react-icons/fa";
 import profileAvatar from "../assets/profile_avatar.png";
 
 const roles = [
@@ -10,7 +10,16 @@ const roles = [
     "Edge AI Pipeline Engineer",
 ];
 
+const pipelineStages = ["rtsp://cam0", "nvinfer", "nvtracker", "vlm", "insight"];
+
+const achievements = [
+    { icon: FaTrophy, label: "JEE Main AIR", value: "157" },
+    { icon: FaTrophy, label: "JEE Advanced AIR", value: "709" },
+    { icon: FaGraduationCap, label: "IIT Bombay", value: "CSE" },
+];
+
 const Hero = () => {
+    const prefersReducedMotion = useReducedMotion();
     const [text, setText] = useState("");
     const [roleIndex, setRoleIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
@@ -20,6 +29,15 @@ const Hero = () => {
     const email = "rahuldeepak.k.11@gmail.com";
 
     useEffect(() => {
+        // Reduced motion: no typewriter — show each role fully, rotate slowly
+        if (prefersReducedMotion) {
+            setText(roles[roleIndex]);
+            const timeout = setTimeout(() => {
+                setRoleIndex((prev) => (prev + 1) % roles.length);
+            }, 5000);
+            return () => clearTimeout(timeout);
+        }
+
         const currentRole = roles[roleIndex];
         const typeSpeed = isDeleting ? 50 : 100;
 
@@ -39,7 +57,7 @@ const Hero = () => {
         }, typeSpeed);
 
         return () => clearTimeout(timeout);
-    }, [charIndex, isDeleting, roleIndex]);
+    }, [charIndex, isDeleting, roleIndex, prefersReducedMotion]);
 
     const copyEmail = () => {
         navigator.clipboard.writeText(email);
@@ -47,12 +65,15 @@ const Hero = () => {
         setTimeout(() => setEmailCopied(false), 2000);
     };
 
+    const socialButtonClass =
+        "group px-5 py-3 border border-[var(--color-edge)] bg-[var(--color-panel)]/60 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2";
+
     return (
         <section id="hero" className="min-h-screen flex flex-col justify-center px-6 relative overflow-hidden">
             {/* Background terminal effect hint */}
-            <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--color-slate-card)_0%,_transparent_70%)]"></div>
+            <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--color-panel)_0%,_transparent_70%)]"></div>
 
-            <div className="max-w-5xl mx-auto w-full z-10 pt-20">
+            <div className="max-w-5xl mx-auto w-full z-10 pt-24 pb-12">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
                     {/* Profile Picture */}
                     <motion.div
@@ -61,15 +82,20 @@ const Hero = () => {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="shrink-0"
                     >
-                        <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-br from-[var(--color-orange)] via-orange-400 to-amber-500 rounded-full opacity-50 blur-md group-hover:opacity-80 transition-opacity duration-500"></div>
+                        <div className="relative">
+                            <div className="absolute -inset-1 bg-gradient-to-br from-[var(--color-orange)] via-orange-400 to-amber-500 rounded-full opacity-40 blur-md"></div>
                             <img
                                 src={profileAvatar}
                                 alt="Rahul Deepak"
-                                className="relative w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-2 border-slate-700 group-hover:border-[var(--color-orange)] transition-colors duration-300"
+                                className="relative w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-2 border-[var(--color-edge)]"
                             />
                             {/* Online status dot */}
-                            <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-900 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                            <div
+                                className="absolute bottom-2 right-2 w-4 h-4 bg-[var(--color-signal)] rounded-full border-2 border-[var(--color-void)]"
+                                role="img"
+                                aria-label="Currently available"
+                                title="Currently available"
+                            ></div>
                         </div>
                     </motion.div>
 
@@ -84,30 +110,50 @@ const Hero = () => {
                             Initialize portfolio...
                         </p>
 
-                        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+                        <h1 className="font-display text-[clamp(2.5rem,8vw,4.5rem)] leading-[1.05] font-bold text-white mb-6 tracking-tight">
                             Kuchipudi Rahul Deepak
                         </h1>
 
-                        <div className="h-12 md:h-16 mb-8 text-2xl md:text-4xl text-slate-400 font-medium">
+                        <div className="min-h-16 md:min-h-20 mb-6 text-xl sm:text-2xl md:text-3xl text-[var(--color-dim)] font-medium">
                             <span className="terminal-prefix-gt text-[var(--color-orange)] mr-2"></span>
                             {text}
-                            <span className="animate-pulse text-[var(--color-orange)]">_</span>
+                            <span className="animate-pulse text-[var(--color-orange)]" aria-hidden="true">_</span>
+                        </div>
+
+                        {/* Signature: GStreamer pipeline strip */}
+                        <div className="mb-8" aria-label="Video analytics pipeline: RTSP camera to inference to tracking to vision-language model to insight">
+                            <p className="text-xs text-[var(--color-dim)]/70 mb-2 font-mono" aria-hidden="true">
+                                # gst-launch-1.0
+                            </p>
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-2 justify-center md:justify-start font-mono text-xs sm:text-sm" aria-hidden="true">
+                                {pipelineStages.map((stage, i) => (
+                                    <span key={stage} className="contents">
+                                        {i > 0 && <span className="text-[var(--color-orange)] font-bold">!</span>}
+                                        <span
+                                            className="pipe-stage px-2.5 py-1 rounded bg-[var(--color-panel)]/50"
+                                            style={{ animationDelay: `${i * 0.6}s` }}
+                                        >
+                                            {stage}
+                                        </span>
+                                    </span>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Achievement Badges */}
-                        <div className="flex flex-wrap gap-4 mb-10 justify-center md:justify-start">
-                            <div className="px-4 py-2 border border-slate-700 bg-slate-800/50 rounded text-sm text-slate-300 hover:border-[var(--color-orange)] transition-colors cursor-default">
-                                🏆 JEE Main AIR <span className="text-white font-bold">157</span>
-                            </div>
-                            <div className="px-4 py-2 border border-slate-700 bg-slate-800/50 rounded text-sm text-slate-300 hover:border-[var(--color-orange)] transition-colors cursor-default">
-                                🏆 JEE Advanced AIR <span className="text-white font-bold">709</span>
-                            </div>
-                            <div className="px-4 py-2 border border-slate-700 bg-slate-800/50 rounded text-sm text-slate-300 hover:border-[var(--color-orange)] transition-colors cursor-default">
-                                🎓 IIT Bombay <span className="text-white font-bold">CSE</span>
-                            </div>
+                        <div className="flex flex-wrap gap-3 mb-8 justify-center md:justify-start">
+                            {achievements.map((badge) => (
+                                <div
+                                    key={badge.label}
+                                    className="flex items-center gap-2 px-4 py-2 border border-[var(--color-edge)] bg-[var(--color-panel)]/50 rounded text-sm text-slate-300"
+                                >
+                                    <badge.icon className="text-[var(--color-orange)]" aria-hidden="true" />
+                                    {badge.label} <span className="text-white font-bold">{badge.value}</span>
+                                </div>
+                            ))}
                         </div>
 
-                        <p className="text-slate-400 max-w-2xl text-lg mb-10 leading-relaxed">
+                        <p className="text-[var(--color-dim)] max-w-2xl text-lg mb-10 leading-relaxed">
                             Building high-performance edge AI systems and scalable inference pipelines.
                             Currently architecting modular video analytics at Avathon with DeepStream &amp; Triton.
                         </p>
@@ -124,9 +170,9 @@ const Hero = () => {
                                 href="/resume.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
+                                className={socialButtonClass}
                             >
-                                <FaFileDownload className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                                <FaFileDownload className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" aria-hidden="true" />
                                 Resume
                             </a>
 
@@ -134,9 +180,9 @@ const Hero = () => {
                                 href="https://github.com/rahuldeepak-the-one"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
+                                className={socialButtonClass}
                             >
-                                <FaGithub className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                                <FaGithub className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" aria-hidden="true" />
                                 GitHub
                             </a>
 
@@ -144,19 +190,16 @@ const Hero = () => {
                                 href="https://www.linkedin.com/in/rahul-deepak-kuchipudi-b4322825a"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
+                                className={socialButtonClass}
                             >
-                                <FaLinkedin className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                                <FaLinkedin className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" aria-hidden="true" />
                                 LinkedIn
                             </a>
 
-                            <button
-                                onClick={copyEmail}
-                                className="group px-6 py-3 border border-slate-700 bg-slate-800/50 text-white rounded hover:border-[var(--color-orange)] transition-colors flex items-center gap-2"
-                            >
-                                <FaEnvelope className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" />
+                            <button onClick={copyEmail} className={socialButtonClass}>
+                                <FaEnvelope className="text-slate-400 group-hover:text-[var(--color-orange)] transition-colors" aria-hidden="true" />
                                 {emailCopied ? "Copied!" : "Copy Email"}
-                                {emailCopied ? null : <FaCopy className="text-xs text-slate-500" />}
+                                {emailCopied ? null : <FaCopy className="text-xs text-slate-500" aria-hidden="true" />}
                             </button>
                         </div>
                     </motion.div>

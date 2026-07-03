@@ -33,14 +33,20 @@ const ParticleBackground = () => {
             });
         }
 
-        const animate = () => {
+        const drawFrame = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach((p) => {
                 ctx.font = `${p.size}px "Ubuntu Sans Mono", monospace`;
                 ctx.fillStyle = `rgba(249, 115, 22, ${p.opacity})`;
                 ctx.fillText(p.char, p.x, p.y);
+            });
+        };
 
+        const animate = () => {
+            drawFrame();
+
+            particles.forEach((p) => {
                 p.y -= p.speed;
                 p.x += p.drift;
 
@@ -55,7 +61,12 @@ const ParticleBackground = () => {
             animationId = requestAnimationFrame(animate);
         };
 
-        animate();
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) {
+            drawFrame();
+        } else {
+            animate();
+        }
 
         return () => {
             window.removeEventListener("resize", resize);
@@ -66,6 +77,7 @@ const ParticleBackground = () => {
     return (
         <canvas
             ref={canvasRef}
+            aria-hidden="true"
             className="fixed inset-0 pointer-events-none z-0"
             style={{ opacity: 0.6 }}
         />

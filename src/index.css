@@ -1,19 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  --color-slate-base: #0f172a;
-  --color-slate-card: #1e293b;
+  /* "edge terminal" palette — Ubuntu orange on deep console black,
+     signal green reserved for live metrics/status only */
+  --color-void: #0a0f1e;
+  --color-panel: #111a2e;
+  --color-edge: #22304d;
   --color-orange: #f97316;
-  --color-ubuntu: #f97316;
-  
+  --color-signal: #4ade80;
+  --color-bright: #f1f5f9;
+  --color-dim: #8fa3bf;
+
+  --font-display: "Space Grotesk", "Ubuntu Sans Mono", sans-serif;
   --font-ubuntu-mono: "Ubuntu Sans Mono", monospace;
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: var(--color-slate-base);
-    color: white;
+    background-color: var(--color-void);
+    color: var(--color-bright);
     font-family: var(--font-ubuntu-mono);
+  }
+
+  ::selection {
+    background-color: var(--color-orange);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+  }
+
+  code {
+    background-color: rgba(34, 48, 77, 0.6);
+    border: 1px solid var(--color-edge);
+    border-radius: 0.25rem;
+    padding: 0 0.3rem;
+    font-size: 0.85em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -22,6 +63,7 @@
     content: "$ ";
     color: var(--color-orange);
     margin-right: 0.5rem;
+    font-family: var(--font-ubuntu-mono);
   }
 
   .terminal-prefix-gt::before {
@@ -31,11 +73,32 @@
   }
 
   .nvidia-glow {
-    box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
   }
-  
-  .nvidia-glow:hover {
-    box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+
+  /* signature: GStreamer pipeline strip — stages light up in sequence
+     like buffers flowing downstream */
+  .pipe-stage {
+    border: 1px solid var(--color-edge);
+    color: var(--color-dim);
+    animation: pipe-pulse 5s infinite;
+  }
+
+  @keyframes pipe-pulse {
+    0%, 12%, 100% {
+      border-color: var(--color-edge);
+      color: var(--color-dim);
+    }
+    4%, 8% {
+      border-color: var(--color-orange);
+      color: var(--color-bright);
+      box-shadow: 0 0 12px rgba(249, 115, 22, 0.35);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pipe-stage {
+      animation: none;
+    }
   }
 }

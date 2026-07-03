@@ -48,7 +48,7 @@ const Experience = () => {
                     <div className="absolute top-0 -left-[9px] w-4 h-4 bg-slate-900 border-2 border-slate-500 rounded-full group-hover:border-[var(--color-orange)] group-hover:shadow-[0_0_10px_rgba(249,115,22,0.5)] transition-all"></div>
 
                     <div className="mb-2">
-                        <h3 className="text-2xl font-bold text-white group-hover:text-[var(--color-orange)] transition-colors">
+                        <h3 className="font-display text-2xl font-bold text-white group-hover:text-[var(--color-orange)] transition-colors">
                             {exp.company}
                         </h3>
                         <div className="text-slate-400 flex flex-wrap items-center gap-2 text-sm mt-1">
@@ -81,7 +81,7 @@ const Experience = () => {
                         {exp.tech.map((tech) => (
                             <span
                                 key={tech}
-                                className="text-xs font-mono text-slate-400 bg-slate-800 px-2 py-1 rounded border border-slate-700/50"
+                                className="text-xs font-mono text-slate-400 bg-[var(--color-panel)] px-2 py-1 rounded border border-[var(--color-edge)]"
                             >
                                 {tech}
                             </span>
