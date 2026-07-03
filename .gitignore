@@ -26,3 +26,7 @@ dist-ssr
 # env
 .env
 .env.local
+
+# agent tooling
+.claude/
+skills-lock.json
