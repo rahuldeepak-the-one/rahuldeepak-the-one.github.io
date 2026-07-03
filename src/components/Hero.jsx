@@ -29,9 +29,8 @@ const Hero = () => {
     const email = "rahuldeepak.k.11@gmail.com";
 
     useEffect(() => {
-        // Reduced motion: no typewriter — show each role fully, rotate slowly
+        // Reduced motion: no typewriter — roles rotate as full text (see displayText)
         if (prefersReducedMotion) {
-            setText(roles[roleIndex]);
             const timeout = setTimeout(() => {
                 setRoleIndex((prev) => (prev + 1) % roles.length);
             }, 5000);
@@ -58,6 +57,8 @@ const Hero = () => {
 
         return () => clearTimeout(timeout);
     }, [charIndex, isDeleting, roleIndex, prefersReducedMotion]);
+
+    const displayText = prefersReducedMotion ? roles[roleIndex] : text;
 
     const copyEmail = () => {
         navigator.clipboard.writeText(email);
@@ -116,7 +117,7 @@ const Hero = () => {
 
                         <div className="min-h-16 md:min-h-20 mb-6 text-xl sm:text-2xl md:text-3xl text-[var(--color-dim)] font-medium">
                             <span className="terminal-prefix-gt text-[var(--color-orange)] mr-2"></span>
-                            {text}
+                            {displayText}
                             <span className="animate-pulse text-[var(--color-orange)]" aria-hidden="true">_</span>
                         </div>
 

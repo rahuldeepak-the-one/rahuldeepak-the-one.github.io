@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaTrash, FaEdit, FaSave, FaLock, FaEye } from "react-icons/fa";
@@ -10,16 +10,13 @@ const BlogAdmin = () => {
     const [authenticated, setAuthenticated] = useState(false);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(() => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+    });
     const [editing, setEditing] = useState(null);
-    const [showPreview, setShowPreview] = useState(false);
 
     const emptyPost = { slug: "", title: "", date: new Date().toISOString().split("T")[0], tags: "", excerpt: "", readTime: "5 min", content: "" };
-
-    useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) setPosts(JSON.parse(saved));
-    }, []);
 
     const savePosts = (updated) => {
         setPosts(updated);
