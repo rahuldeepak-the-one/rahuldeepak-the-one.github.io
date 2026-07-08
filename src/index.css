@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* "edge terminal" palette — Ubuntu orange on deep console black,
-     signal green reserved for live metrics/status only */
-  --color-void: #0a0f1e;
-  --color-panel: #111a2e;
-  --color-edge: #22304d;
-  --color-orange: #f97316;
-  --color-signal: #4ade80;
-  --color-bright: #f1f5f9;
-  --color-dim: #8fa3bf;
+  /* "Blueprint on Paper" palette — electric-blue ink on warm paper,
+     per the approved 3a design handoff */
+  --color-paper: #f7f7f4;
+  --color-ink: #16181d;
+  --color-blueink: #2f4fe0;
+  --color-blueink-soft: #5b74e8;
+  --color-body: #55596a;
+  --color-label: #6b7080;
 
-  --font-display: "Space Grotesk", "Ubuntu Sans Mono", sans-serif;
-  --font-ubuntu-mono: "Ubuntu Sans Mono", monospace;
+  --font-display: "Sora", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 @layer base {
@@ -21,27 +21,28 @@
   }
 
   body {
-    background-color: var(--color-void);
-    color: var(--color-bright);
-    font-family: var(--font-ubuntu-mono);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
   }
 
   ::selection {
-    background-color: var(--color-orange);
-    color: var(--color-void);
+    background-color: var(--color-blueink);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-orange);
+    outline: 2px solid var(--color-blueink);
     outline-offset: 3px;
   }
 
   code {
-    background-color: rgba(34, 48, 77, 0.6);
-    border: 1px solid var(--color-edge);
-    border-radius: 0.25rem;
+    background-color: #ffffff;
+    border: 1px solid rgba(47, 79, 224, 0.3);
     padding: 0 0.3rem;
     font-size: 0.85em;
+    font-family: var(--font-mono);
+    color: var(--color-blueink);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -59,46 +60,93 @@
 }
 
 @layer components {
-  .terminal-prefix::before {
-    content: "$ ";
-    color: var(--color-orange);
-    margin-right: 0.5rem;
-    font-family: var(--font-ubuntu-mono);
+  /* dashed "FIG." drawing box — hover turns the ink solid and lifts */
+  .fig-card {
+    position: relative;
+    border: 1px dashed rgba(47, 79, 224, 0.45);
+    background: rgba(255, 255, 255, 0.6);
+    transition:
+      border-color 250ms ease,
+      box-shadow 250ms ease,
+      transform 250ms ease;
   }
 
-  .terminal-prefix-gt::before {
-    content: "> ";
-    color: var(--color-orange);
-    margin-right: 0.5rem;
+  .fig-card:hover {
+    border-style: solid;
+    border-color: var(--color-blueink);
+    box-shadow: 0 12px 32px rgba(47, 79, 224, 0.08);
   }
 
-  .nvidia-glow {
-    box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
+  .fig-card--lift:hover {
+    transform: translateY(-3px);
   }
 
-  /* signature: GStreamer pipeline strip — stages light up in sequence
-     like buffers flowing downstream */
-  .pipe-stage {
-    border: 1px solid var(--color-edge);
-    color: var(--color-dim);
-    animation: pipe-pulse 5s infinite;
+  /* figure label floating over the top border */
+  .fig-tag {
+    position: absolute;
+    top: -9px;
+    left: 24px;
+    background: var(--color-paper);
+    padding: 0 10px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-blueink);
   }
 
-  @keyframes pipe-pulse {
-    0%, 12%, 100% {
-      border-color: var(--color-edge);
-      color: var(--color-dim);
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-blueink);
+    border: 1px solid rgba(47, 79, 224, 0.4);
+    background: #ffffff;
+    padding: 4px 12px;
+  }
+
+  /* circuit trace with a glowing charge travelling along it */
+  .trace {
+    position: relative;
+    flex: 1;
+    min-width: 24px;
+    height: 1.5px;
+    background: rgba(47, 79, 224, 0.35);
+  }
+
+  .trace--ink {
+    background: rgba(22, 24, 29, 0.3);
+  }
+
+  .trace-dot {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-blueink);
+    box-shadow: 0 0 8px rgba(47, 79, 224, 0.8);
+    animation: tracerun 3s linear infinite;
+  }
+
+  .trace-dot--ink {
+    background: var(--color-ink);
+    box-shadow: none;
+  }
+
+  @keyframes tracerun {
+    0% {
+      left: 0%;
+      opacity: 0;
     }
-    4%, 8% {
-      border-color: var(--color-orange);
-      color: var(--color-bright);
-      box-shadow: 0 0 12px rgba(249, 115, 22, 0.35);
+    8% {
+      opacity: 1;
     }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .pipe-stage {
-      animation: none;
+    92% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
     }
   }
 }

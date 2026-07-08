@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaPlus, FaTrash, FaEdit, FaSave, FaLock, FaEye } from "react-icons/fa";
+import { FaPlus, FaTrash, FaEdit, FaSave, FaEye } from "react-icons/fa";
 
 const ADMIN_PASSWORD = import.meta.env.VITE_BLOG_ADMIN_PASSWORD || "";
 const STORAGE_KEY = "blog_admin_posts";
+
+const inputClass =
+    "w-full border border-dashed border-blueink/45 bg-white px-3 py-2 font-mono text-sm text-ink placeholder:text-label/60 focus:border-solid focus:border-blueink focus:outline-none transition-colors";
+const labelClass = "mb-1 block font-mono text-[11px] uppercase tracking-wide text-label";
+const solidButtonClass =
+    "flex items-center gap-2 bg-blueink px-4 py-2 font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft";
 
 const BlogAdmin = () => {
     const [authenticated, setAuthenticated] = useState(false);
@@ -63,116 +69,128 @@ const BlogAdmin = () => {
 
     if (!authenticated) {
         return (
-            <div className="min-h-screen pt-24 pb-20 px-6 flex items-center justify-center">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md w-full">
-                    <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-8">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span className="text-slate-500 text-xs ml-2 font-mono">sudo blog-admin</span>
-                        </div>
-                        <div className="text-center mb-6">
-                            <FaLock className="mx-auto text-[var(--color-orange)] text-3xl mb-3" />
-                            <h1 className="text-2xl font-bold text-white">Blog Admin</h1>
-                            <p className="text-slate-400 text-sm mt-1">Authentication required</p>
-                        </div>
-                        <form onSubmit={handleLogin}>
+            <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-14">
+                <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md">
+                    <div className="fig-card p-8">
+                        <span className="fig-tag">FIG. X1 — ACCESS CONTROL</span>
+                        <h1 className="font-display text-2xl font-extrabold text-ink">Notes Admin</h1>
+                        <p className="mt-1 font-mono text-[12px] text-label">AUTHENTICATION REQUIRED</p>
+                        <form onSubmit={handleLogin} className="mt-6">
                             <div className="mb-4">
-                                <label className="block text-slate-400 text-xs font-mono mb-2">$ password:</label>
-                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white font-mono focus:border-[var(--color-orange)] focus:outline-none transition-colors" placeholder="Enter password..." autoFocus />
+                                <label className={labelClass} htmlFor="admin-password">Password</label>
+                                <input
+                                    id="admin-password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={inputClass}
+                                    placeholder="Enter password…"
+                                    autoFocus
+                                />
                             </div>
-                            {error && <p className="text-red-400 text-sm font-mono mb-4">{error}</p>}
-                            <button type="submit" className="w-full px-6 py-3 bg-[var(--color-orange)] text-white font-bold rounded hover:bg-orange-600 transition-colors">Authenticate</button>
+                            {error && <p className="mb-4 font-mono text-[12px] text-red-600">{error}</p>}
+                            <button type="submit" className={`${solidButtonClass} w-full justify-center py-3`}>
+                                AUTHENTICATE →
+                            </button>
                         </form>
                     </div>
-                    <Link to="/blog" className="block text-center mt-4 text-slate-400 hover:text-[var(--color-orange)] text-sm transition-colors">← Back to blog</Link>
+                    <Link to="/blog" className="mt-4 block text-center font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
+                        ← ALL NOTES
+                    </Link>
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-6">
-            <div className="max-w-5xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <Link to="/blog" className="inline-flex items-center gap-2 text-slate-400 hover:text-[var(--color-orange)] transition-colors text-sm mb-2">
-                            <FaArrowLeft size={12} /> Back to blog
-                        </Link>
-                        <h1 className="text-3xl font-bold text-white"><span className="text-[var(--color-orange)]">$</span> blog-admin</h1>
+        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-14 md:px-12">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
+                        ← ALL NOTES
+                    </Link>
+                    <h1 className="mt-2 font-display text-[30px] font-extrabold tracking-[-1px] text-ink">Notes Admin</h1>
+                </div>
+                <button onClick={addPost} className={solidButtonClass}>
+                    <FaPlus aria-hidden="true" /> NEW NOTE
+                </button>
+            </div>
+
+            <p className="mt-4 font-mono text-[12px] text-label">
+                Drafts live in this browser (localStorage). To publish permanently, add them to <code>src/data/blogData.js</code>.
+            </p>
+
+            <AnimatePresence>
+                {editing && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="fig-card mt-8 overflow-hidden p-6"
+                    >
+                        <span className="fig-tag">{editing.isNew ? "FIG. X2 — NEW NOTE" : "FIG. X2 — EDIT NOTE"}</span>
+                        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <label className={labelClass}>Title *</label>
+                                <input value={editing.title} onChange={e => setEditing({ ...editing, title: e.target.value })} className={inputClass} placeholder="Note title…" />
+                            </div>
+                            <div>
+                                <label className={labelClass}>Tags (comma-separated)</label>
+                                <input value={typeof editing.tags === "string" ? editing.tags : editing.tags?.join(", ")} onChange={e => setEditing({ ...editing, tags: e.target.value })} className={inputClass} placeholder="DeepStream, C++, AI" />
+                            </div>
+                            <div>
+                                <label className={labelClass}>Date</label>
+                                <input type="date" value={editing.date} onChange={e => setEditing({ ...editing, date: e.target.value })} className={inputClass} />
+                            </div>
+                            <div>
+                                <label className={labelClass}>Read time</label>
+                                <input value={editing.readTime} onChange={e => setEditing({ ...editing, readTime: e.target.value })} className={inputClass} placeholder="5 min" />
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <label className={labelClass}>Excerpt</label>
+                            <textarea rows={2} value={editing.excerpt} onChange={e => setEditing({ ...editing, excerpt: e.target.value })} className={`${inputClass} resize-y`} placeholder="Brief summary…" />
+                        </div>
+                        <div className="mb-4">
+                            <label className={labelClass}>Content * (Markdown-like)</label>
+                            <textarea rows={12} value={editing.content} onChange={e => setEditing({ ...editing, content: e.target.value })} className={`${inputClass} resize-y`} placeholder={"## Section heading\n\nContent here…\n\n```code block```"} />
+                        </div>
+                        <div className="flex gap-3">
+                            <button onClick={savePost} className={solidButtonClass}><FaSave aria-hidden="true" /> SAVE</button>
+                            <button
+                                onClick={() => setEditing(null)}
+                                className="border border-dashed border-blueink/45 bg-white px-4 py-2 font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
+                            >
+                                CANCEL
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="mt-8 flex flex-col gap-4">
+                {posts.length === 0 && !editing && (
+                    <div className="fig-card px-8 py-14 text-center">
+                        <span className="fig-tag">FIG. X3 — EMPTY REGISTER</span>
+                        <p className="font-mono text-[13px] text-body">No local drafts yet. Use NEW NOTE to start writing.</p>
                     </div>
-                    <button onClick={addPost} className="flex items-center gap-2 px-4 py-2 bg-[var(--color-orange)] text-white font-bold rounded hover:bg-orange-600 transition-colors">
-                        <FaPlus /> New Post
-                    </button>
-                </div>
-
-                <p className="text-slate-400 text-sm mb-2 font-mono">
-                    ℹ️ Posts saved here are stored in your browser (localStorage). To make them permanent, add them to <code className="text-[var(--color-orange)]">src/data/blogData.js</code>
-                </p>
-
-                <AnimatePresence>
-                    {editing && (
-                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="bg-slate-800/50 border border-[var(--color-orange)]/50 rounded-lg p-6 mb-8 overflow-hidden">
-                            <h2 className="text-xl font-bold text-white mb-4">{editing.isNew ? "New Post" : "Edit Post"}</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label className="block text-slate-400 text-xs font-mono mb-1">Title *</label>
-                                    <input value={editing.title} onChange={e => setEditing({ ...editing, title: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none" placeholder="Post title..." />
-                                </div>
-                                <div>
-                                    <label className="block text-slate-400 text-xs font-mono mb-1">Tags (comma-separated)</label>
-                                    <input value={typeof editing.tags === "string" ? editing.tags : editing.tags?.join(", ")} onChange={e => setEditing({ ...editing, tags: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none" placeholder="DeepStream, C++, AI" />
-                                </div>
-                                <div>
-                                    <label className="block text-slate-400 text-xs font-mono mb-1">Date</label>
-                                    <input type="date" value={editing.date} onChange={e => setEditing({ ...editing, date: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none" />
-                                </div>
-                                <div>
-                                    <label className="block text-slate-400 text-xs font-mono mb-1">Read Time</label>
-                                    <input value={editing.readTime} onChange={e => setEditing({ ...editing, readTime: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none" placeholder="5 min" />
-                                </div>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-slate-400 text-xs font-mono mb-1">Excerpt</label>
-                                <textarea rows={2} value={editing.excerpt} onChange={e => setEditing({ ...editing, excerpt: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none resize-y" placeholder="Brief summary..." />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-slate-400 text-xs font-mono mb-1">Content * (Markdown-like)</label>
-                                <textarea rows={12} value={editing.content} onChange={e => setEditing({ ...editing, content: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white font-mono text-sm focus:border-[var(--color-orange)] focus:outline-none resize-y" placeholder="## Section heading&#10;&#10;Content here...&#10;&#10;```code block```" />
-                            </div>
-                            <div className="flex gap-3">
-                                <button onClick={savePost} className="flex items-center gap-2 px-4 py-2 bg-[var(--color-orange)] text-white font-bold rounded hover:bg-orange-600 transition-colors"><FaSave /> Save</button>
-                                <button onClick={() => setEditing(null)} className="px-4 py-2 border border-slate-700 text-slate-400 rounded hover:border-[var(--color-orange)] hover:text-white transition-colors">Cancel</button>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                <div className="space-y-4">
-                    {posts.length === 0 && !editing && (
-                        <div className="text-center py-16 text-slate-500 font-mono">
-                            <p className="text-lg">$ ls ~/blog/drafts/</p>
-                            <p className="mt-2">No local drafts yet. Click "New Post" to start writing.</p>
-                        </div>
-                    )}
-                    {posts.map(post => (
-                        <div key={post.slug} className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-4 flex items-center justify-between gap-4">
-                            <div className="min-w-0 flex-1">
-                                <h3 className="text-white font-bold truncate">{post.title}</h3>
-                                <div className="flex items-center gap-3 text-xs text-slate-500 mt-1 font-mono">
-                                    <span>{post.date}</span>
-                                    <span>{Array.isArray(post.tags) ? post.tags.join(", ") : post.tags}</span>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 shrink-0">
-                                <Link to={`/blog/${post.slug}`} className="p-2 text-slate-400 hover:text-[var(--color-orange)] transition-colors"><FaEye /></Link>
-                                <button onClick={() => setEditing({ ...post, tags: Array.isArray(post.tags) ? post.tags.join(", ") : post.tags })} className="p-2 text-slate-400 hover:text-[var(--color-orange)] transition-colors"><FaEdit /></button>
-                                <button onClick={() => deletePost(post.slug)} className="p-2 text-slate-400 hover:text-red-400 transition-colors"><FaTrash /></button>
+                )}
+                {posts.map(post => (
+                    <div key={post.slug} className="fig-card flex items-center justify-between gap-4 px-6 py-4">
+                        <div className="min-w-0 flex-1">
+                            <h3 className="truncate font-display text-[16px] font-bold text-ink">{post.title}</h3>
+                            <div className="mt-1 flex items-center gap-3 font-mono text-[11px] text-label">
+                                <span>{post.date}</span>
+                                <span>{Array.isArray(post.tags) ? post.tags.join(", ") : post.tags}</span>
                             </div>
                         </div>
-                    ))}
-                </div>
+                        <div className="flex shrink-0 gap-1">
+                            <Link to={`/blog/${post.slug}`} aria-label={`View ${post.title}`} className="p-2 text-label transition-colors hover:text-blueink"><FaEye aria-hidden="true" /></Link>
+                            <button onClick={() => setEditing({ ...post, tags: Array.isArray(post.tags) ? post.tags.join(", ") : post.tags })} aria-label={`Edit ${post.title}`} className="p-2 text-label transition-colors hover:text-blueink"><FaEdit aria-hidden="true" /></button>
+                            <button onClick={() => deletePost(post.slug)} aria-label={`Delete ${post.title}`} className="p-2 text-label transition-colors hover:text-red-600"><FaTrash aria-hidden="true" /></button>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

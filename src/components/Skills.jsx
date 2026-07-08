@@ -1,52 +1,46 @@
-import { motion } from "framer-motion";
+const topTrace = ["CUDA", "TENSORRT", "DEEPSTREAM", "GSTREAMER"];
+const bottomTrace = ["VLLM", "PYTORCH", "KAFKA / REDIS", "C++ / PYTHON"];
 
-const skillCategories = [
-    {
-        title: "Languages",
-        skills: ["C++", "Python", "C", "JavaScript", "Bash", "SQL"],
-        delay: 0
-    },
-    {
-        title: "AI & Computer Vision",
-        skills: ["DeepStream", "TensorRT", "Triton", "CUDA", "PyTorch", "TensorFlow", "ONNX", "YOLO", "GStreamer"],
-        delay: 0.15
-    },
-    {
-        title: "Systems & DevOps",
-        skills: ["Docker", "Kubernetes", "Linux", "CI/CD", "Kafka", "GPU Programming", "Meson", "Git", "Nginx"],
-        delay: 0.3
-    }
-];
-
-const Skills = () => {
-    return (
-        <div className="space-y-12">
-            {skillCategories.map((category, index) => (
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: category.delay }}
+const CircuitRow = ({ nodes, ink = false, period, offset }) => (
+    <div className="flex min-w-max items-center md:min-w-0" role="list">
+        {nodes.map((node, i) => (
+            <span key={node} className="contents">
+                {i > 0 && (
+                    <span className={`trace ${ink ? "trace--ink" : ""}`}>
+                        <span
+                            className={`trace-dot ${ink ? "trace-dot--ink" : ""}`}
+                            style={{ animationDuration: `${period}s`, animationDelay: `${offset + i * 0.8}s` }}
+                        ></span>
+                    </span>
+                )}
+                <span
+                    role="listitem"
+                    className={`shrink-0 border-[1.5px] bg-white px-[18px] py-2.5 font-mono text-[12px] font-bold ${
+                        ink ? "border-ink text-ink" : "border-blueink text-blueink"
+                    }`}
                 >
-                    <h3 className="font-display text-xl font-bold text-white mb-6 border-l-4 border-[var(--color-orange)] pl-3">
-                        {category.title}
-                    </h3>
+                    {node}
+                </span>
+            </span>
+        ))}
+    </div>
+);
 
-                    <ul className="flex flex-wrap gap-3 list-none">
-                        {category.skills.map((skill) => (
-                            <li
-                                key={skill}
-                                className="bg-[var(--color-panel)]/70 px-4 py-2 rounded text-slate-300 font-mono text-sm border border-[var(--color-edge)]"
-                            >
-                                {skill}
-                            </li>
-                        ))}
-                    </ul>
-                </motion.div>
-            ))}
+const Skills = () => (
+    <div className="fig-card flex flex-col gap-9 px-9 py-10">
+        <span className="fig-tag">FIG. C1 — INFERENCE PATH</span>
+
+        {/* narrow screens scroll the schematic horizontally */}
+        <div className="flex flex-col gap-9 overflow-x-auto pt-1">
+            <CircuitRow nodes={topTrace} period={2.6} offset={0} />
+            <CircuitRow nodes={bottomTrace} ink period={3.2} offset={0.4} />
         </div>
-    );
-};
+
+        <div className="flex flex-wrap justify-between gap-2 font-mono text-[10px] text-label">
+            <span>TOP TRACE: EDGE INFERENCE PIPELINE</span>
+            <span>BOTTOM TRACE: MODEL SERVING &amp; SYSTEMS</span>
+        </div>
+    </div>
+);
 
 export default Skills;

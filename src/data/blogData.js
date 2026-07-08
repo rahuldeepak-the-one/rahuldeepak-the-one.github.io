@@ -172,4 +172,13 @@ The modernized platform now runs 24/7 across dozens of edge devices with zero un
     }
 ];
 
+// newest first; note numbers count up from the oldest post (latest = highest)
+export const sortedPosts = [...blogPosts].sort((a, b) => b.date.localeCompare(a.date));
+
+export const noteLabel = (slug) => {
+    const index = sortedPosts.findIndex((post) => post.slug === slug);
+    if (index === -1) return "NOTE-000";
+    return `NOTE-${String(sortedPosts.length - index).padStart(3, "0")}`;
+};
+
 export default blogPosts;
