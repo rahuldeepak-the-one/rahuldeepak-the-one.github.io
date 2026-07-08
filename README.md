@@ -1,16 +1,61 @@
-# React + Vite
+# rahuldeepak-the-one.github.io
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio + blog of **Rahul Deepak Kuchipudi** — edge-AI inference engineer (NVIDIA DeepStream / TensorRT / CUDA / vLLM), IIT Bombay CSE.
 
-Currently, two official plugins are available:
+**Live:** [rahuldeepak-the-one.github.io](https://rahuldeepak-the-one.github.io)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Design — "Blueprint on Paper"
 
-## React Compiler
+An engineering drawing in electric-blue ink (`#2f4fe0`) on warm paper (`#f7f7f4`):
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- DWG-numbered sticky nav (`DWG № RDK-2026 · REV C`) with SHEET 1–4 links
+- Dashed `FIG.` boxes for experience, projects, and the circuit-schematic skills section
+- A title-block contact bar and dimension-line motifs with travelling charge dots
+- Signature **electron-field hero** (`src/components/ElectronField.jsx`): a canvas of drifting electrons over a procedural circuit board — the cursor pulls a conduction path together, clicks fire ripples
 
-## Expanding the ESLint configuration
+Type: **Sora** (display) · **Manrope** (body) · **JetBrains Mono** (annotations), via Google Fonts.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Accessibility: `prefers-reduced-motion` gets a static circuit render and no keyframe animation; the hero's animation loop pauses while off-screen.
+
+## Stack
+
+React 19 · Vite 7 · Tailwind CSS v4 · react-router (HashRouter) · framer-motion
+
+## Develop
+
+```bash
+npm install
+npm run dev       # local dev server with HMR
+npm run lint      # ESLint
+npm run build     # production build → dist/
+npm run preview   # serve the production build locally
+```
+
+## Deploy
+
+```bash
+npm run deploy    # builds and publishes dist/ to the gh-pages branch
+```
+
+GitHub Pages serves the `gh-pages` branch. `vite.config.js` keeps `base: '/'` (user site).
+
+## Blog ("Field Notes")
+
+- Posts live in `src/data/blogData.js` as markdown-ish strings, rendered by `src/components/BlogPost.jsx`.
+- `/#/admin` is a browser-local drafting UI (localStorage), gated by `VITE_BLOG_ADMIN_PASSWORD` (see `.env.example`). Drafts are not published — copy finished posts into `blogData.js`.
+
+## Structure
+
+```
+src/
+├── App.jsx                  # routes + home page composition
+├── index.css                # design tokens (@theme) + FIG-card/trace component classes
+├── data/blogData.js         # blog posts (source of truth)
+└── components/
+    ├── ElectronField.jsx    # canvas hero animation
+    ├── DimensionLine.jsx    # dimension-line motif (hero + blog divider)
+    ├── Navbar.jsx           # DWG header, sheet links, scroll-spy
+    ├── Hero.jsx  StatsBar.jsx  Experience.jsx  Projects.jsx  Skills.jsx
+    ├── FieldNotes.jsx       # blog teaser on home
+    └── BlogList.jsx  BlogPost.jsx  BlogAdmin.jsx  Footer.jsx
+```
