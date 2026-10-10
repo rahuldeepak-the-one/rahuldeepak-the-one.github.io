@@ -21,7 +21,6 @@ const PipelineRow = ({ nodes, ink = false, period, offset }) => (
                 )}
                 <span
                     role="listitem"
-                    data-det="stage"
                     className={`shrink-0 border-[1.5px] bg-white px-[18px] py-2.5 font-mono text-[12px] font-bold ${
                         ink ? "border-ink text-ink" : "border-blueink text-blueink"
                     }`}

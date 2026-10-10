@@ -20,7 +20,7 @@ const Hero = () => {
                     TITLE BLOCK — ENGINEER, GPU VIDEO ANALYTICS &amp; VLM SYSTEMS · IIT BOMBAY CSE
                 </p>
 
-                <h1 data-det="name" className="font-display text-[clamp(40px,8vw,72px)] font-extrabold leading-[1.02] tracking-[-2px] text-ink">
+                <h1 className="font-display text-[clamp(40px,8vw,72px)] font-extrabold leading-[1.02] tracking-[-2px] text-ink">
                     RAHUL DEEPAK
                     <br />
                     KUCHIPUDI
