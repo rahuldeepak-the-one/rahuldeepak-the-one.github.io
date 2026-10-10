@@ -44,7 +44,7 @@ const StatsBar = () => (
     <div className="border-y border-blueink/35 bg-white/55">
         <div className="mx-auto grid max-w-[1200px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, i) => (
-                <div key={stat.label} className={`border-dashed border-blueink/30 px-8 py-[26px] ${dividerClasses[i]}`}>
+                <div key={stat.label} data-det="metric" className={`border-dashed border-blueink/30 px-8 py-[26px] ${dividerClasses[i]}`}>
                     <div
                         className={`font-display text-[34px] font-extrabold tabular-nums ${
                             stat.accent ? "text-blueink" : "text-ink"

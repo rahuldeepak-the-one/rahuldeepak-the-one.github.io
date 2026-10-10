@@ -9,6 +9,7 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import FieldNotes from "./components/FieldNotes";
 import Footer from "./components/Footer";
+import SelfDetect from "./components/SelfDetect";
 import BlogList from "./components/BlogList";
 import BlogPost from "./components/BlogPost";
 import BlogAdmin from "./components/BlogAdmin";
@@ -185,6 +186,7 @@ function App() {
                 </Routes>
             </main>
             <Footer />
+            <SelfDetect />
         </div>
     );
 }

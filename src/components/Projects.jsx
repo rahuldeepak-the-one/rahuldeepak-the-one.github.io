@@ -40,6 +40,7 @@ const Projects = () => (
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-det="project"
                 className="fig-card fig-card--lift flex flex-col gap-2.5 p-7"
             >
                 <span className="fig-tag">{project.tag}</span>

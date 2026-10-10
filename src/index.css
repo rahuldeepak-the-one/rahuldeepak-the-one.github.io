@@ -94,6 +94,91 @@
     color: var(--color-blueink);
   }
 
+  /* self-detection overlay: box that snaps onto the hovered element */
+  .det-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    pointer-events: none;
+    border: 1.5px solid var(--color-blueink);
+    box-shadow: 0 0 0 3px rgba(47, 79, 224, 0.08);
+    transition:
+      transform 220ms cubic-bezier(0.32, 0.72, 0, 1),
+      width 220ms cubic-bezier(0.32, 0.72, 0, 1),
+      height 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .det-box__tag {
+    position: absolute;
+    left: -1.5px;
+    bottom: 100%;
+    background: var(--color-blueink);
+    color: #ffffff;
+    padding: 1px 6px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .det-box__tag--below {
+    bottom: auto;
+    top: 100%;
+  }
+
+  /* VLM caption bar narrating the section on screen */
+  .vlm-bar {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 45;
+    width: min(380px, calc(100% - 32px));
+    border: 1px dashed rgba(47, 79, 224, 0.55);
+    background: rgba(247, 247, 244, 0.94);
+    backdrop-filter: blur(8px);
+    padding: 12px 14px;
+    box-shadow: 0 12px 32px rgba(47, 79, 224, 0.08);
+  }
+
+  .vlm-bar--min {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-blueink);
+  }
+
+  .vlm-caret {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    margin-left: 2px;
+    vertical-align: -2px;
+    background: var(--color-blueink);
+    animation: caretblink 1s steps(1) infinite;
+  }
+
+  @keyframes caretblink {
+    50% { opacity: 0; }
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-blueink);
+    animation: livepulse 2s ease-out infinite;
+  }
+
+  @keyframes livepulse {
+    0% { box-shadow: 0 0 0 0 rgba(47, 79, 224, 0.5); }
+    80%, 100% { box-shadow: 0 0 0 7px rgba(47, 79, 224, 0); }
+  }
+
   .chip {
     font-family: var(--font-mono);
     font-size: 11px;
