@@ -204,6 +204,24 @@
     }
   }
 
+  /* architecture diagram: frames travelling along each edge */
+  .arch-flow {
+    stroke-dasharray: 6 14;
+    animation: archflow 1.6s linear infinite;
+  }
+
+  .arch-flow--slow {
+    stroke-dasharray: 3 9;
+    opacity: 0.7;
+    animation-duration: 3s;
+  }
+
+  @keyframes archflow {
+    to {
+      stroke-dashoffset: -40;
+    }
+  }
+
   .live-dot {
     width: 6px;
     height: 6px;

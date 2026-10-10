@@ -1,4 +1,5 @@
 import { Bezel, Reveal } from "./ui";
+import ArchDiagram from "./ArchDiagram";
 
 const subsystems = [
     {
@@ -39,6 +40,12 @@ const Experience = () => (
                 <span className="live-dot" aria-hidden="true"></span>
                 Jul 2025 — present
             </span>
+        </Reveal>
+
+        <Reveal>
+            <Bezel coreClassName="p-6 md:p-8">
+                <ArchDiagram />
+            </Bezel>
         </Reveal>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
