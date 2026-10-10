@@ -6,21 +6,21 @@ const links = [
 ];
 
 const Footer = () => (
-    <footer className="mx-auto max-w-[1280px] px-4 pb-12 md:px-12">
-        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-ink/10 pt-8 text-[13px] text-label">
+    <footer className="mx-auto max-w-[1200px] px-5 pb-10 md:px-10">
+        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8 text-[13px]">
             <div className="flex flex-wrap gap-x-6 gap-y-2">
                 {links.map((link) => (
                     <a
                         key={link.label}
                         href={link.href}
                         {...(link.href.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-                        className="text-ink transition-colors duration-500 hover:text-blueink"
+                        className="text-body transition-colors hover:text-blueink"
                     >
                         {link.label}
                     </a>
                 ))}
             </div>
-            <span className="font-mono text-[12px]">© {new Date().getFullYear()} Rahul Deepak Kuchipudi · Bengaluru</span>
+            <span className="font-mono text-[12px] text-label">© {new Date().getFullYear()} Rahul Deepak Kuchipudi · Bengaluru</span>
         </div>
     </footer>
 );

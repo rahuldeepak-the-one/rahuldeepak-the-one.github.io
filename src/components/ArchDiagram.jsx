@@ -1,81 +1,53 @@
 /**
- * Capability sketch — detector models and VLMs working together on live
- * video. Deliberately generic: no internal system names or topology.
- * Edge "flow" dashes are CSS-animated, so prefers-reduced-motion stills them.
+ * Capability strip — detector models and VLMs working together on live
+ * video. Horizontal on desktop, vertical on phones (no sideways scroll).
+ * Deliberately generic: no internal system names or topology.
  */
-const W = 190;
-const H = 84;
-const Y = 60;
-
 const nodes = [
-    { x: 20, title: "Video streams", sub: "live cameras", kind: "io" },
-    { x: 300, title: "Detector models", sub: "TensorRT · real-time", kind: "hot" },
-    { x: 580, title: "VLM reasoning", sub: "vLLM · verify + describe", kind: "hot" },
-    { x: 860, title: "Alerts & search", sub: "verified events", kind: "io" },
+    { title: "Video streams", sub: "live RTSP cameras", hot: false },
+    { title: "Detector models", sub: "DeepStream · TensorRT", hot: true, stage: "See" },
+    { title: "VLM reasoning", sub: "vLLM · verify + describe", hot: true, stage: "Understand" },
+    { title: "Alerts & search", sub: "verified events", hot: false },
 ];
+const edges = ["frames", "detections", "verdicts"];
 
-const edges = [
-    { x1: 210, x2: 300, label: "frames" },
-    { x1: 490, x2: 580, label: "detections" },
-    { x1: 770, x2: 860, label: "verdicts" },
-];
+const Node = ({ n }) => (
+    <div
+        className={`relative flex-1 rounded-[8px] px-4 py-3.5 ${
+            n.hot ? "bg-blueink text-on-accent" : "bg-sunken text-ink shadow-[inset_0_0_0_1px_var(--color-line)]"
+        }`}
+    >
+        {n.stage && (
+            <span className="absolute -top-[9px] right-3 rounded-[3px] bg-surface px-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-blueink shadow-[0_0_0_1px_var(--color-line)]">
+                {n.stage}
+            </span>
+        )}
+        <p className="text-[15px] font-semibold tracking-[-0.01em]">{n.title}</p>
+        <p className={`mt-0.5 font-mono text-[11px] ${n.hot ? "opacity-80" : "text-label"}`}>{n.sub}</p>
+    </div>
+);
+
+const Edge = ({ label }) => (
+    <div className="flex shrink-0 items-center justify-center gap-2 md:w-[92px] md:flex-col md:gap-1">
+        <span className="flow--v h-6 w-[1.5px] md:hidden" aria-hidden="true"></span>
+        <span className="flow hidden h-[1.5px] w-full md:block" aria-hidden="true"></span>
+        <span className="font-mono text-[10px] text-label">{label}</span>
+    </div>
+);
 
 const ArchDiagram = () => (
-    <figure className="flex flex-col gap-3">
-        <div className="overflow-x-auto">
-            <svg viewBox="0 0 1070 170" className="w-full min-w-[640px]" role="img" aria-labelledby="arch-title">
-                <title id="arch-title">
-                    Live video streams go to detector models running on TensorRT, detections go to a vLLM-served
-                    vision-language model that verifies and describes them, and verified events become alerts and search.
-                </title>
-                <defs>
-                    <marker id="arch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                        <path d="M0 0 L10 5 L0 10 z" fill="#2f4fe0" />
-                    </marker>
-                </defs>
-
-                {/* capability labels over the two model stages */}
-                <text x={395} y={36} textAnchor="middle" className="font-mono" fontSize="11" letterSpacing="1.5" fill="#2f4fe0">
-                    SEE
-                </text>
-                <text x={675} y={36} textAnchor="middle" className="font-mono" fontSize="11" letterSpacing="1.5" fill="#2f4fe0">
-                    UNDERSTAND
-                </text>
-
-                {edges.map((e) => (
-                    <g key={e.label}>
-                        <path d={`M${e.x1} ${Y + H / 2} H${e.x2}`} stroke="rgba(47,79,224,0.35)" strokeWidth="1.5" markerEnd="url(#arch-arrow)" />
-                        <path d={`M${e.x1} ${Y + H / 2} H${e.x2 - 4}`} stroke="#2f4fe0" strokeWidth="1.5" className="arch-flow" />
-                        <text x={(e.x1 + e.x2) / 2} y={Y + H / 2 + 22} textAnchor="middle" className="font-mono" fontSize="10" fill="#7a7e8b">
-                            {e.label}
-                        </text>
-                    </g>
-                ))}
-
-                {nodes.map((n) => {
-                    const hot = n.kind === "hot";
-                    return (
-                        <g key={n.title}>
-                            <rect
-                                x={n.x}
-                                y={Y}
-                                width={W}
-                                height={H}
-                                rx="16"
-                                fill={hot ? "#2f4fe0" : "#f2f2ef"}
-                                stroke={hot ? "#2f4fe0" : "rgba(17,18,20,0.15)"}
-                                strokeDasharray={hot ? undefined : "4 4"}
-                            />
-                            <text x={n.x + 18} y={Y + 36} className="font-display" fontSize="16" fontWeight="600" fill={hot ? "#ffffff" : "#111214"}>
-                                {n.title}
-                            </text>
-                            <text x={n.x + 18} y={Y + 58} className="font-mono" fontSize="11" fill={hot ? "rgba(255,255,255,0.8)" : "#7a7e8b"}>
-                                {n.sub}
-                            </text>
-                        </g>
-                    );
-                })}
-            </svg>
+    <figure>
+        <figcaption className="sr-only">
+            Live video streams go to detector models on TensorRT; detections go to a vLLM-served vision-language
+            model that verifies and describes them; verified events become alerts and search.
+        </figcaption>
+        <div className="flex flex-col items-stretch md:flex-row md:items-center">
+            {nodes.map((n, i) => (
+                <div key={n.title} className="contents">
+                    {i > 0 && <Edge label={edges[i - 1]} />}
+                    <Node n={n} />
+                </div>
+            ))}
         </div>
     </figure>
 );

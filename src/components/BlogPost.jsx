@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import blogPosts, { noteLabel } from "../data/blogData";
-import DimensionLine from "./DimensionLine";
 
 const BlogPost = () => {
     const { slug } = useParams();
@@ -10,13 +9,13 @@ const BlogPost = () => {
 
     if (!post) {
         return (
-            <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-32">
+            <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-28">
                 <div className="fig-card w-full px-8 py-14 text-center">
                     <span className="fig-tag">FIG. 404 — NOT FOUND</span>
                     <p className="font-mono text-[13px] text-body">No note filed under “{slug}”.</p>
                     <Link
                         to="/blog"
-                        className="mt-6 inline-block bg-blueink px-[30px] py-[13px] font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft"
+                        className="mt-6 inline-block bg-blueink px-[30px] py-[13px] font-mono text-[13px] font-bold text-on-accent transition-colors hover:bg-blueink-soft"
                     >
                         ← ALL NOTES
                     </Link>
@@ -32,7 +31,7 @@ const BlogPost = () => {
     };
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-[720px] px-6 pb-20 pt-32">
+        <div className="mx-auto min-h-screen w-full max-w-[720px] px-6 pb-20 pt-28">
             <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
                 ← ALL NOTES
             </Link>
@@ -56,14 +55,14 @@ const BlogPost = () => {
                 </div>
             </header>
 
-            <DimensionLine animated={false} className="my-10" />
+            <hr className="my-10 border-0 border-t border-line" />
 
             <article className="text-[16px] leading-[1.8] text-body">{renderContent(post.content)}</article>
 
-            <div className="mt-16 border-t border-blueink/25 pt-8">
+            <div className="mt-16 border-t border-line pt-8">
                 <Link
                     to="/blog"
-                    className="inline-block border border-dashed border-blueink/55 bg-white/60 px-[30px] py-[13px] font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
+                    className="inline-block border border-line-strong bg-surface px-[30px] py-[13px] font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
                 >
                     ← ALL NOTES
                 </Link>
@@ -81,7 +80,7 @@ function renderContent(content) {
         <div key={key++} className="my-6 overflow-x-auto">
             <table className="w-full border-collapse text-sm">
                 <thead>
-                    <tr className="border-b border-blueink/35">
+                    <tr className="border-b border-line">
                         {tRows[0]?.map((c, ci) => (
                             <th key={ci} className="px-3 py-2 text-left font-mono text-[12px] font-bold text-blueink">{c}</th>
                         ))}
@@ -89,7 +88,7 @@ function renderContent(content) {
                 </thead>
                 <tbody>
                     {tRows.slice(1).map((r, ri) => (
-                        <tr key={ri} className="border-b border-blueink/15 hover:bg-blueink/5">
+                        <tr key={ri} className="border-b border-line hover:bg-blueink/5">
                             {r.map((c, ci) => (
                                 <td key={ci} className="px-3 py-2 text-body">{c}</td>
                             ))}
@@ -105,7 +104,7 @@ function renderContent(content) {
         if (line.trim().startsWith("```")) {
             if (inCode) {
                 elements.push(
-                    <pre key={key++} className="my-6 overflow-x-auto border border-dashed border-blueink/45 bg-white p-4 font-mono text-[13px] leading-relaxed text-ink">
+                    <pre key={key++} className="my-6 overflow-x-auto border border-line-strong bg-surface p-4 font-mono text-[13px] leading-relaxed text-ink">
                         <code className="border-0 bg-transparent p-0 text-[inherit] text-ink">{codeLines.join("\n")}</code>
                     </pre>
                 );

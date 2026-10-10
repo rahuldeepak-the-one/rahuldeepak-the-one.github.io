@@ -1,25 +1,37 @@
 @import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+/* "Viewfinder" — an instrument-panel theme for a video-analytics engineer.
+   Hairline frames, corner brackets and detection-box labels instead of
+   floating cards. Every colour is a token; dark mode only swaps tokens. */
 
 @theme {
-  /* "Soft Structuralism" — silver-white paper, near-black ink, one electric
-     blue accent; depth comes from nested bezels and diffused shadows */
-  --color-paper: #f2f2ef;
-  --color-ink: #111214;
-  --color-blueink: #2f4fe0;
-  --color-blueink-soft: #5b74e8;
-  --color-body: #4e5260;
-  --color-label: #7a7e8b;
+  --color-paper: #15171c;
+  --color-surface: #1c1f26;
+  --color-sunken: #232730;
+  --color-ink: #f1eee8;
+  --color-body: #b5b1a8;
+  --color-label: #959086;
+  --color-line: rgb(255 240 210 / 0.09);
+  --color-line-strong: rgb(255 240 210 / 0.2);
+  --color-blueink: #f5a524;
+  --color-blueink-soft: #ffc566;
+  --color-on-accent: #15171c;
+  --color-signal: #3ddc84;
 
-  --font-display: "Geist", sans-serif;
-  --font-body: "Geist", sans-serif;
-  --font-mono: "Geist Mono", monospace;
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
 
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
@@ -27,38 +39,27 @@
     color: var(--color-ink);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
-  }
-
-  /* fixed film grain — never attached to a scrolling element */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    transition: background-color 300ms ease, color 300ms ease;
   }
 
   ::selection {
     background-color: var(--color-blueink);
-    color: #ffffff;
+    color: var(--color-on-accent);
   }
 
   :focus-visible {
     outline: 2px solid var(--color-blueink);
     outline-offset: 3px;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   code {
-    background-color: #ffffff;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.08);
+    background-color: var(--color-sunken);
+    border-radius: 4px;
     padding: 0.05rem 0.35rem;
     font-size: 0.85em;
     font-family: var(--font-mono);
-    color: var(--color-blueink);
+    color: var(--color-ink);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -76,45 +77,74 @@
 }
 
 @layer components {
-  /* Double bezel: an aluminium tray (outer) holding a glass plate (inner) */
-  .bezel {
-    border-radius: 2rem;
-    padding: 6px;
-    background: rgba(17, 18, 20, 0.035);
-    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.05);
-    transition: transform 700ms var(--ease-spring), box-shadow 700ms var(--ease-spring);
+  /* Panel: a flat surface with a hairline border. */
+  .panel {
+    position: relative;
+    border-radius: 10px;
+    background: var(--color-surface);
+    box-shadow: 0 0 0 1px var(--color-line);
   }
 
-  .bezel-core {
-    height: 100%;
-    border-radius: calc(2rem - 6px);
-    background: #fbfbfa;
-    box-shadow:
-      inset 0 1px 1px rgba(255, 255, 255, 0.9),
-      0 1px 2px rgba(30, 36, 70, 0.04),
-      0 24px 48px -24px rgba(30, 36, 70, 0.12);
+  /* Viewfinder corner brackets — the site's signature motif. */
+  .frame {
+    position: relative;
+  }
+  .frame::before,
+  .frame::after,
+  .frame-hover::before,
+  .frame-hover::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    border-color: var(--color-blueink);
+    transition: width 400ms var(--ease-spring), height 400ms var(--ease-spring), opacity 300ms ease;
+  }
+  .frame::before,
+  .frame-hover::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+    border-top-left-radius: 10px;
+  }
+  .frame::after,
+  .frame-hover::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 1.5px solid;
+    border-bottom: 1.5px solid;
+    border-bottom-right-radius: 10px;
+  }
+  /* hover-only brackets appear on hover; framed + hover ones grow */
+  .frame-hover:not(.frame)::before,
+  .frame-hover:not(.frame)::after {
+    opacity: 0;
+  }
+  .frame-hover:hover::before,
+  .frame-hover:hover::after {
+    opacity: 1;
+    width: 28px;
+    height: 28px;
+  }
+  .frame-hover {
+    position: relative;
+    transition: box-shadow 300ms ease;
+  }
+  .frame-hover:hover {
+    box-shadow: 0 0 0 1px var(--color-line-strong);
   }
 
-  .bezel--lift:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      0 0 0 1px rgba(47, 79, 224, 0.18),
-      0 40px 80px -40px rgba(47, 79, 224, 0.28);
-  }
-
+  /* Monospace telemetry label. */
   .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    width: max-content;
-    border-radius: 9999px;
-    padding: 4px 12px;
-    background: #ffffff;
-    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.07);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-label);
   }
@@ -123,110 +153,95 @@
     color: var(--color-blueink);
   }
 
-  .chip {
-    border-radius: 9999px;
-    padding: 4px 11px;
-    background: rgba(47, 79, 224, 0.06);
+  /* Detection-box style tag: solid accent label like a bbox class name. */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    border-radius: 3px;
+    padding: 2px 7px;
+    background: var(--color-blueink);
+    color: var(--color-on-accent);
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-blueink);
+    font-weight: 500;
+    letter-spacing: 0.04em;
   }
 
-  /* legacy names still used by blog/admin pages */
-  .fig-card {
-    position: relative;
-    border-radius: 1.5rem;
-    background: #fbfbfa;
-    box-shadow:
-      0 0 0 1px rgba(17, 18, 20, 0.06),
-      0 24px 48px -24px rgba(30, 36, 70, 0.12);
+  .tag--ghost {
+    background: transparent;
+    color: var(--color-label);
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
   }
 
-  .fig-tag {
-    position: absolute;
-    top: -11px;
-    left: 24px;
-    border-radius: 9999px;
-    padding: 3px 11px;
-    background: #ffffff;
-    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.08);
-    white-space: nowrap;
+  .chip {
+    border-radius: 4px;
+    padding: 3px 8px;
+    background: var(--color-sunken);
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--color-blueink);
-  }
-
-  /* pipeline link with a frame travelling along it */
-  .trace {
-    position: relative;
-    flex: 1;
-    min-width: 24px;
-    height: 1px;
-    background: rgba(47, 79, 224, 0.3);
-  }
-
-  .trace--ink {
-    background: rgba(17, 18, 20, 0.2);
-  }
-
-  .trace-dot {
-    position: absolute;
-    top: -3px;
-    left: 0;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-blueink);
-    box-shadow: 0 0 10px rgba(47, 79, 224, 0.7);
-    animation: tracerun 3s cubic-bezier(0.45, 0, 0.2, 1) infinite;
-  }
-
-  .trace-dot--ink {
-    background: var(--color-ink);
-    box-shadow: none;
-  }
-
-  @keyframes tracerun {
-    0% {
-      left: 0%;
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      left: 100%;
-      opacity: 0;
-    }
-  }
-
-  /* architecture diagram: frames travelling along each edge */
-  .arch-flow {
-    stroke-dasharray: 6 14;
-    animation: archflow 1.6s linear infinite;
-  }
-
-
-  @keyframes archflow {
-    to {
-      stroke-dashoffset: -40;
-    }
+    font-size: 12px;
+    color: var(--color-body);
   }
 
   .live-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--color-blueink);
+    background: var(--color-signal);
     animation: livepulse 2.4s var(--ease-spring) infinite;
   }
 
   @keyframes livepulse {
-    0% { box-shadow: 0 0 0 0 rgba(47, 79, 224, 0.45); }
-    80%, 100% { box-shadow: 0 0 0 8px rgba(47, 79, 224, 0); }
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-signal) 50%, transparent); }
+    80%, 100% { box-shadow: 0 0 0 7px transparent; }
+  }
+
+  /* Animated data-flow edge in the architecture strip. */
+  .flow {
+    background-image: linear-gradient(90deg, var(--color-blueink) 50%, transparent 50%);
+    background-size: 10px 1.5px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+    animation: flow 0.9s linear infinite;
+  }
+  .flow--v {
+    background-image: linear-gradient(180deg, var(--color-blueink) 50%, transparent 50%);
+    background-size: 1.5px 10px;
+    background-repeat: repeat-y;
+    background-position: 50% 0;
+    animation: flowv 0.9s linear infinite;
+  }
+  @keyframes flow { to { background-position: 10px 50%; } }
+  @keyframes flowv { to { background-position: 50% 10px; } }
+
+  .scanline {
+    animation: scan 5s linear infinite;
+  }
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(400%); }
+  }
+
+  /* Legacy blog/admin names, re-skinned onto the token system. */
+  .fig-card {
+    position: relative;
+    border-radius: 10px;
+    background: var(--color-surface);
+    box-shadow: 0 0 0 1px var(--color-line);
+  }
+
+  .fig-tag {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    border-radius: 3px;
+    padding: 2px 8px;
+    background: var(--color-blueink);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-on-accent);
   }
 }

@@ -1,63 +1,66 @@
-import { Bezel, Reveal } from "./ui";
+import { Panel, Reveal } from "./ui";
 
-const visionPath = ["GStreamer", "DeepStream", "TensorRT", "CUDA"];
-const reasoningPath = ["vLLM", "PyTorch", "Redis / MQTT", "FastAPI"];
-const toolbox = [
-    "C++", "Python", "C", "Bash", "SQL",
-    "Triton", "ONNX Runtime", "FP16 / INT8", "CUDA graphs",
-    "Hugging Face", "OpenCV", "LanceDB",
-    "Docker", "Kubernetes", "Kafka", "Linux", "GitLab CI/CD", "meson / ninja",
+const groups = [
+    { k: "Inference & edge", items: ["NVIDIA DeepStream", "TensorRT", "CUDA · CUDA graphs", "GStreamer", "Triton", "ONNX Runtime", "FP16 / INT8"] },
+    { k: "LLM & ML", items: ["vLLM", "PyTorch", "VLMs / LLMs", "Hugging Face", "OpenCV", "LanceDB"] },
+    { k: "Systems & infra", items: ["Docker", "Kubernetes", "Kafka", "Redis · MQTT", "Linux", "GitLab CI/CD", "meson / ninja"] },
+    { k: "Languages", items: ["C++", "Python", "C", "Bash", "SQL"] },
 ];
 
-const PipelineRow = ({ label, nodes, ink = false, period, offset }) => (
-    <div className="flex flex-col gap-4">
-        <span className="font-mono text-[11px] text-label">{label}</span>
-        <div className="overflow-x-auto pb-1">
-            <div className="flex min-w-max items-center md:min-w-0" role="list">
-                {nodes.map((node, i) => (
-                    <span key={node} className="contents">
-                        {i > 0 && (
-                            <span className={`trace ${ink ? "trace--ink" : ""}`}>
-                                <span
-                                    className={`trace-dot ${ink ? "trace-dot--ink" : ""}`}
-                                    style={{ animationDuration: `${period}s`, animationDelay: `${offset + i * 0.8}s` }}
-                                ></span>
-                            </span>
-                        )}
-                        <span
-                            role="listitem"
-                            className={`shrink-0 rounded-full px-5 py-2.5 text-[14px] font-medium ${
-                                ink
-                                    ? "bg-white text-ink shadow-[0_0_0_1px_rgba(17,18,20,0.1)]"
-                                    : "bg-blueink text-white shadow-[0_10px_24px_-10px_rgba(47,79,224,0.6)]"
-                            }`}
-                        >
-                            {node}
-                        </span>
-                    </span>
-                ))}
-            </div>
-        </div>
-    </div>
-);
+const background = [
+    { k: "Education", v: "B.Tech, Computer Science & Engineering", sub: "IIT Bombay · 2021 – 2025" },
+    { k: "Entrance", v: "JEE Advanced AIR 709 · JEE Main AIR 157", sub: "NTSE Scholar" },
+    {
+        k: "Certification",
+        v: "Deep Learning Specialization",
+        sub: "DeepLearning.AI · 2025 ↗",
+        href: "https://coursera.org/verify/specialization/TIOE0Y7QDS0M",
+    },
+];
 
 const Skills = () => (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
-        <Reveal className="md:col-span-8">
-            <Bezel className="h-full" coreClassName="flex flex-col justify-center gap-10 p-8 md:p-10">
-                <PipelineRow label="Vision pipeline — frames in" nodes={visionPath} period={2.6} offset={0} />
-                <PipelineRow label="VLM serving & systems — verdicts out" nodes={reasoningPath} ink period={3.2} offset={0.4} />
-            </Bezel>
+    <div className="flex flex-col gap-5">
+        <Reveal>
+            <Panel className="grid grid-cols-2 lg:grid-cols-4">
+                {groups.map((g, i) => (
+                    <div
+                        key={g.k}
+                        className={`flex flex-col gap-4 p-6 md:p-7 ${i % 2 ? "border-l border-line" : ""} ${
+                            i > 1 ? "border-t border-line lg:border-t-0" : ""
+                        } ${i === 2 ? "lg:border-l" : ""}`}
+                    >
+                        <span className="eyebrow eyebrow--accent">{g.k}</span>
+                        <ul className="flex flex-col gap-2">
+                            {g.items.map((it) => (
+                                <li key={it} className="text-[15px] text-ink">{it}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </Panel>
         </Reveal>
-        <Reveal delay={0.1} className="md:col-span-4">
-            <Bezel className="h-full" coreClassName="flex flex-col gap-5 p-8 md:p-10">
-                <span className="eyebrow">Also in the toolbox</span>
-                <ul className="flex flex-wrap gap-2" aria-label="Other tools">
-                    {toolbox.map((tool) => (
-                        <li key={tool} className="chip">{tool}</li>
-                    ))}
-                </ul>
-            </Bezel>
+
+        <Reveal>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                {background.map((b) => {
+                    const inner = (
+                        <>
+                            <span className="eyebrow">{b.k}</span>
+                            <p className="mt-3 text-[16px] font-medium leading-snug text-ink">{b.v}</p>
+                            <p className="mt-1 font-mono text-[12px] text-label">{b.sub}</p>
+                        </>
+                    );
+                    return b.href ? (
+                        <Panel as="a" key={b.k} href={b.href} target="_blank" rel="noopener noreferrer" hover className="block p-6">
+                            {inner}
+                        </Panel>
+                    ) : (
+                        <Panel key={b.k} className="p-6">
+                            {inner}
+                        </Panel>
+                    );
+                })}
+            </div>
         </Reveal>
     </div>
 );

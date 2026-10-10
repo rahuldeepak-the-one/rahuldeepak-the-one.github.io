@@ -7,6 +7,7 @@ const spring = [0.32, 0.72, 0, 1];
 const items = [
     { id: "experience", label: "Work", type: "anchor" },
     { id: "projects", label: "Projects", type: "anchor" },
+    { id: "stack", label: "Stack", type: "anchor" },
     { id: "blog", label: "Notes", type: "route", href: "/blog" },
     { id: "contact", label: "Contact", type: "anchor" },
 ];
@@ -20,11 +21,19 @@ const scrollToSection = (id) => {
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === "/" || location.pathname === "";
     const isBlog = location.pathname.startsWith("/blog");
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 8);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     // scroll-spy: highlight the section on screen
     useEffect(() => {
@@ -37,14 +46,13 @@ const Navbar = () => {
             },
             { rootMargin: "-30% 0px -60% 0px" }
         );
-        ["hero", "experience", "projects", "skills", "education", "notes", "contact"].forEach((id) => {
+        ["hero", "experience", "projects", "stack", "notes", "contact"].forEach((id) => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
         });
         return () => observer.disconnect();
     }, [isHome]);
 
-    // lock page scroll behind the full-screen menu
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => {
@@ -54,7 +62,7 @@ const Navbar = () => {
 
     const handleClick = (e, item) => {
         setIsOpen(false);
-        if (item.type === "route") return; // Link handles navigation
+        if (item.type === "route") return;
         e.preventDefault();
         if (isHome) scrollToSection(item.id);
         else navigate("/", { state: { scrollTo: item.id } });
@@ -76,8 +84,12 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-5">
-                <div className="flex w-full max-w-max items-center gap-2 rounded-full bg-white/70 p-1.5 pl-5 shadow-[0_0_0_1px_rgba(17,18,20,0.06),0_16px_40px_-16px_rgba(30,36,70,0.25)] backdrop-blur-xl max-md:w-full max-md:max-w-none max-md:justify-between">
+            <nav
+                className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
+                    scrolled || isOpen ? "bg-paper/85 shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : "bg-transparent"
+                }`}
+            >
+                <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-5 md:px-10">
                     <Link
                         to="/"
                         onClick={(e) => {
@@ -87,9 +99,11 @@ const Navbar = () => {
                             }
                             setIsOpen(false);
                         }}
-                        className="mr-4 flex items-center gap-2 whitespace-nowrap text-[14px] font-semibold tracking-[-0.01em] text-ink"
+                        className="flex items-center gap-2.5 whitespace-nowrap text-[15px] font-semibold tracking-[-0.01em] text-ink"
                     >
-                        <span className="live-dot" aria-hidden="true"></span>
+                        <span className="flex h-7 w-7 items-center justify-center rounded-[5px] bg-ink font-mono text-[11px] font-semibold text-paper">
+                            RD
+                        </span>
                         Rahul Deepak
                     </Link>
 
@@ -97,31 +111,40 @@ const Navbar = () => {
                         {items.map((item) =>
                             renderLink(
                                 item,
-                                `rounded-full px-4 py-2 text-[14px] transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                                    isActive(item) ? "bg-ink text-white" : "text-body hover:bg-ink/5 hover:text-ink"
-                                }`
+                                `relative rounded-md px-3 py-2 text-[14px] transition-colors duration-300 ${
+                                    isActive(item) ? "text-ink" : "text-label hover:text-ink"
+                                } ${isActive(item) ? "after:absolute after:inset-x-3 after:-bottom-[1px] after:h-[1.5px] after:bg-blueink" : ""}`
                             )
                         )}
+                        <a
+                            href="/resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-3 rounded-md bg-blueink px-3.5 py-2 text-[13px] font-medium text-on-accent transition-colors hover:bg-blueink-soft"
+                        >
+                            Resume
+                        </a>
                     </div>
 
-                    {/* hamburger → X morph */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        aria-label={isOpen ? "Close menu" : "Open menu"}
-                        aria-expanded={isOpen}
-                        className="relative flex h-10 w-10 items-center justify-center rounded-full bg-ink/5 md:hidden"
-                    >
-                        <span
-                            className={`absolute h-[1.5px] w-4 bg-ink transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                                isOpen ? "rotate-45" : "-translate-y-[4px]"
-                            }`}
-                        ></span>
-                        <span
-                            className={`absolute h-[1.5px] w-4 bg-ink transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                                isOpen ? "-rotate-45" : "translate-y-[4px]"
-                            }`}
-                        ></span>
-                    </button>
+                    <div className="flex items-center gap-1 md:hidden">
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            aria-label={isOpen ? "Close menu" : "Open menu"}
+                            aria-expanded={isOpen}
+                            className="relative flex h-9 w-9 items-center justify-center rounded-md hover:bg-ink/5"
+                        >
+                            <span
+                                className={`absolute h-[1.5px] w-4 bg-ink transition-transform duration-300 ${
+                                    isOpen ? "rotate-45" : "-translate-y-[4px]"
+                                }`}
+                            ></span>
+                            <span
+                                className={`absolute h-[1.5px] w-4 bg-ink transition-transform duration-300 ${
+                                    isOpen ? "-rotate-45" : "translate-y-[4px]"
+                                }`}
+                            ></span>
+                        </button>
+                    </div>
                 </div>
             </nav>
 
@@ -131,26 +154,34 @@ const Navbar = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: spring }}
-                        className="fixed inset-0 z-30 flex flex-col justify-center bg-paper/85 px-8 backdrop-blur-3xl md:hidden"
+                        transition={{ duration: 0.3, ease: spring }}
+                        className="fixed inset-0 z-30 flex flex-col justify-center gap-1 bg-paper px-6 md:hidden"
                     >
-                        <div className="flex flex-col gap-2">
-                            {items.map((item, i) => (
-                                <div key={item.id} className="overflow-hidden">
-                                    <motion.div
-                                        initial={{ y: 48, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        exit={{ y: 24, opacity: 0 }}
-                                        transition={{ duration: 0.7, ease: spring, delay: 0.1 + i * 0.05 }}
-                                    >
-                                        {renderLink(
-                                            item,
-                                            "block py-2 font-display text-[44px] font-semibold tracking-[-0.04em] text-ink"
-                                        )}
-                                    </motion.div>
-                                </div>
-                            ))}
-                        </div>
+                        {items.map((item, i) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ y: 16, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.4, ease: spring, delay: 0.05 + i * 0.04 }}
+                                className="border-b border-line"
+                            >
+                                {renderLink(
+                                    item,
+                                    "flex items-baseline justify-between py-4 font-display text-[32px] font-semibold tracking-[-0.03em] text-ink"
+                                )}
+                            </motion.div>
+                        ))}
+                        <motion.a
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            href="/resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-6 w-max rounded-md bg-blueink px-4 py-2.5 text-[14px] font-medium text-on-accent"
+                        >
+                            Resume ↗
+                        </motion.a>
                     </motion.div>
                 )}
             </AnimatePresence>

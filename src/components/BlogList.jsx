@@ -17,9 +17,9 @@ const BlogList = () => {
     }, [activeTag]);
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-32 md:px-12">
+        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-28 md:px-12">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <h1 className="font-display text-[30px] font-extrabold tracking-[-1px] text-ink">Field Notes</h1>
+                <h1 className="font-display text-[30px] font-semibold tracking-[-0.03em] text-ink">Field Notes</h1>
                 <span className="font-mono text-[11px] text-blueink">SECTION D — ALL NOTES</span>
             </div>
 
@@ -32,8 +32,8 @@ const BlogList = () => {
                         aria-pressed={activeTag === tag}
                         className={`px-3 py-1.5 font-mono text-[11px] transition-colors ${
                             activeTag === tag
-                                ? "border border-blueink bg-blueink text-white"
-                                : "border border-blueink/40 bg-white text-blueink hover:border-blueink"
+                                ? "border border-blueink bg-blueink text-on-accent"
+                                : "border border-line-strong bg-surface text-blueink hover:border-blueink"
                         }`}
                     >
                         {tag.toUpperCase()}
@@ -47,7 +47,7 @@ const BlogList = () => {
                     <Link
                         key={post.slug}
                         to={`/blog/${post.slug}`}
-                        className={`grid grid-cols-1 gap-1 border-t border-blueink/25 px-2 py-[18px] transition-colors hover:bg-blueink/5 sm:grid-cols-[140px_1fr_auto] sm:gap-6 ${
+                        className={`grid grid-cols-1 gap-1 border-t border-line px-2 py-[18px] transition-colors hover:bg-blueink/5 sm:grid-cols-[140px_1fr_auto] sm:gap-6 ${
                             i === filteredPosts.length - 1 ? "border-b" : ""
                         }`}
                     >

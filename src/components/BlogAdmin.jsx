@@ -7,10 +7,10 @@ const ADMIN_PASSWORD = import.meta.env.VITE_BLOG_ADMIN_PASSWORD || "";
 const STORAGE_KEY = "blog_admin_posts";
 
 const inputClass =
-    "w-full border border-dashed border-blueink/45 bg-white px-3 py-2 font-mono text-sm text-ink placeholder:text-label/60 focus:border-solid focus:border-blueink focus:outline-none transition-colors";
+    "w-full border border-line-strong bg-surface px-3 py-2 font-mono text-sm text-ink placeholder:text-label/60 focus:border-solid focus:border-blueink focus:outline-none transition-colors";
 const labelClass = "mb-1 block font-mono text-[11px] uppercase tracking-wide text-label";
 const solidButtonClass =
-    "flex items-center gap-2 bg-blueink px-4 py-2 font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft";
+    "flex items-center gap-2 bg-blueink px-4 py-2 font-mono text-[13px] font-bold text-on-accent transition-colors hover:bg-blueink-soft";
 
 const BlogAdmin = () => {
     const [authenticated, setAuthenticated] = useState(false);
@@ -69,7 +69,7 @@ const BlogAdmin = () => {
 
     if (!authenticated) {
         return (
-            <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-32">
+            <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-28">
                 <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md">
                     <div className="fig-card p-8">
                         <span className="fig-tag">FIG. X1 — ACCESS CONTROL</span>
@@ -103,13 +103,13 @@ const BlogAdmin = () => {
     }
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-32 md:px-12">
+        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-28 md:px-12">
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
                     <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
                         ← ALL NOTES
                     </Link>
-                    <h1 className="mt-2 font-display text-[30px] font-extrabold tracking-[-1px] text-ink">Notes Admin</h1>
+                    <h1 className="mt-2 font-display text-[30px] font-semibold tracking-[-0.03em] text-ink">Notes Admin</h1>
                 </div>
                 <button onClick={addPost} className={solidButtonClass}>
                     <FaPlus aria-hidden="true" /> NEW NOTE
@@ -159,7 +159,7 @@ const BlogAdmin = () => {
                             <button onClick={savePost} className={solidButtonClass}><FaSave aria-hidden="true" /> SAVE</button>
                             <button
                                 onClick={() => setEditing(null)}
-                                className="border border-dashed border-blueink/45 bg-white px-4 py-2 font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
+                                className="border border-line-strong bg-surface px-4 py-2 font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
                             >
                                 CANCEL
                             </button>

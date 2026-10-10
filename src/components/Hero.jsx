@@ -1,59 +1,62 @@
 import { motion } from "framer-motion";
-import ElectronField from "./ElectronField";
-import { PillButton } from "./ui";
+import Viewfinder from "./Viewfinder";
+import { Button } from "./ui";
 
 const spring = [0.32, 0.72, 0, 1];
 const rise = (delay) => ({
-    initial: { opacity: 0, y: 40, filter: "blur(8px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-    transition: { duration: 1, ease: spring, delay },
+    initial: { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.7, ease: spring, delay },
 });
 
-const Hero = () => {
-    const openWork = (e) => {
-        e.preventDefault();
-        const element = document.getElementById("experience");
-        if (!element) return;
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        element.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
-    };
+const Hero = () => (
+    <section id="hero" className="relative overflow-hidden">
+        {/* faint measurement grid */}
+        <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 [background-image:linear-gradient(var(--color-line)_1px,transparent_1px),linear-gradient(90deg,var(--color-line)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_30%_40%,black_20%,transparent_70%)] opacity-60"
+        ></div>
 
-    return (
-        <section id="hero" className="relative min-h-[min(100dvh,960px)] overflow-hidden">
-            <ElectronField color="#2f4fe0" linkColor="rgba(47,79,224,0.08)" />
-            <div className="pointer-events-none relative mx-auto flex min-h-[min(100dvh,960px)] max-w-[1280px] flex-col justify-center gap-8 px-4 pb-24 pt-36 md:px-12">
-                <motion.span {...rise(0.05)} className="eyebrow eyebrow--accent">
+        <div className="relative mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-5 pb-16 pt-28 md:px-10 md:pt-36 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pb-24">
+            <div className="flex flex-col gap-7">
+                <motion.span {...rise(0.05)} className="eyebrow">
                     <span className="live-dot" aria-hidden="true"></span>
                     SDE @ Avathon · IIT Bombay CSE
                 </motion.span>
 
                 <motion.h1
-                    {...rise(0.15)}
-                    className="max-w-[14ch] font-display text-[clamp(48px,9vw,120px)] font-semibold leading-[0.95] tracking-[-0.045em] text-ink"
+                    {...rise(0.12)}
+                    className="font-display text-[clamp(44px,6.6vw,84px)] font-semibold leading-[0.98] tracking-[-0.04em] text-ink"
                 >
-                    Rahul Deepak Kuchipudi
+                    Rahul Deepak
+                    <br />
+                    Kuchipudi
                 </motion.h1>
 
-                <motion.p {...rise(0.3)} className="max-w-[52ch] text-[clamp(17px,1.6vw,20px)] font-light leading-[1.6] text-body text-pretty">
-                    I build GPU video-analytics pipelines and the vision-language models that reason over
-                    them — <span className="text-ink">99 live camera streams on a single GPU</span>, from
-                    TensorRT kernels to verified alerts.
+                <motion.p {...rise(0.2)} className="max-w-[46ch] text-[clamp(17px,1.5vw,19px)] leading-[1.6] text-body text-pretty">
+                    I build GPU video-analytics pipelines and the vision-language models that reason over them —
+                    from <span className="text-ink">TensorRT detectors</span> on live camera streams to{" "}
+                    <span className="text-ink">vLLM-served verdicts</span> on what they saw.
                 </motion.p>
 
-                <motion.div {...rise(0.45)} className="pointer-events-auto flex flex-wrap gap-3">
-                    <PillButton href="#experience" onClick={openWork} icon="↓">
-                        See the work
-                    </PillButton>
-                    <PillButton href="/resume.pdf" variant="ghost" external>
+                <motion.div {...rise(0.28)} className="flex flex-wrap gap-3">
+                    <Button href="/resume.pdf" external icon="↗">
                         Resume
-                    </PillButton>
-                    <PillButton href="https://github.com/rahuldeepak-the-one" variant="ghost" external>
+                    </Button>
+                    <Button href="https://github.com/rahuldeepak-the-one" variant="ghost" external icon="↗">
                         GitHub
-                    </PillButton>
+                    </Button>
+                    <Button href="mailto:rahuldeepak.k.11@gmail.com" variant="ghost">
+                        rahuldeepak.k.11@gmail.com
+                    </Button>
                 </motion.div>
             </div>
-        </section>
-    );
-};
+
+            <motion.div {...rise(0.25)}>
+                <Viewfinder />
+            </motion.div>
+        </div>
+    </section>
+);
 
 export default Hero;

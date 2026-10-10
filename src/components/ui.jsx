@@ -2,15 +2,15 @@ import { motion } from "framer-motion";
 
 const spring = [0.32, 0.72, 0, 1];
 
-/** Heavy fade-up with a blur resolve as the element enters the viewport. */
+/** Quiet fade-up as the element enters the viewport. */
 export const Reveal = ({ as = "div", delay = 0, className = "", children, ...rest }) => {
     const Tag = motion[as];
     return (
         <Tag
-            initial={{ opacity: 0, y: 48, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-            transition={{ duration: 0.9, ease: spring, delay }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+            transition={{ duration: 0.6, ease: spring, delay }}
             className={className}
             {...rest}
         >
@@ -19,36 +19,42 @@ export const Reveal = ({ as = "div", delay = 0, className = "", children, ...res
     );
 };
 
-/** Double bezel — outer tray + inner core with concentric radii. */
-export const Bezel = ({ lift = false, className = "", coreClassName = "", children }) => (
-    <div className={`bezel ${lift ? "bezel--lift" : ""} ${className}`}>
-        <div className={`bezel-core ${coreClassName}`}>{children}</div>
-    </div>
+/** Flat surface with a hairline border; `frame` adds viewfinder brackets. */
+export const Panel = ({ as: Tag = "div", frame = false, hover = false, className = "", children, ...rest }) => (
+    <Tag className={`panel ${frame ? "frame" : ""} ${hover ? "frame-hover" : ""} ${className}`} {...rest}>
+        {children}
+    </Tag>
 );
 
-/** Pill button with its trailing arrow nested in its own circle. */
-export const PillButton = ({ href, children, variant = "solid", icon = "↗", external = false, onClick }) => {
-    const solid = variant === "solid";
-    return (
-        <a
-            href={href}
-            onClick={onClick}
-            {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className={`group inline-flex items-center gap-3 rounded-full py-2 pl-6 pr-2 text-[14px] font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] ${
-                solid
-                    ? "bg-ink text-white shadow-[0_12px_32px_-12px_rgba(17,18,20,0.5)] hover:bg-blueink"
-                    : "bg-white text-ink shadow-[0_0_0_1px_rgba(17,18,20,0.08)] hover:shadow-[0_0_0_1px_rgba(47,79,224,0.35)]"
-            }`}
-        >
-            {children}
-            <span
-                aria-hidden="true"
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-[13px] transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-[1px] group-hover:translate-x-1 group-hover:scale-105 ${
-                    solid ? "bg-white/15" : "bg-ink/5"
-                }`}
-            >
+/** Kept for backwards compatibility with older pages. */
+export const Bezel = ({ className = "", coreClassName = "", children }) => (
+    <Panel className={`${className} ${coreClassName}`}>{children}</Panel>
+);
+
+const btnBase =
+    "group inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-[14px] font-medium transition-colors duration-300 active:translate-y-px";
+const btnVariants = {
+    solid: "bg-blueink text-on-accent hover:bg-blueink-soft",
+    accent: "bg-blueink text-on-accent hover:bg-ink hover:text-paper",
+    ghost: "text-ink shadow-[inset_0_0_0_1px_var(--color-line-strong)] hover:shadow-[inset_0_0_0_1px_var(--color-blueink)] hover:text-blueink",
+};
+
+export const Button = ({ href, children, variant = "solid", icon, external = false, onClick, download }) => (
+    <a
+        href={href}
+        onClick={onClick}
+        download={download}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        className={`${btnBase} ${btnVariants[variant]}`}
+    >
+        {children}
+        {icon && (
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5">
                 {icon}
             </span>
-        </a>
-    );
-};
+        )}
+    </a>
+);
+
+/** Back-compat alias. */
+export const PillButton = (props) => <Button {...props} />;

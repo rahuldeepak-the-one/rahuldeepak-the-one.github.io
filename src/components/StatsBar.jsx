@@ -1,56 +1,32 @@
-import { useState, useEffect, useRef } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
-import { Bezel, Reveal } from "./ui";
+import { Reveal } from "./ui";
 
-// bento spans: two wide hero numbers, two narrower supporting ones
 const stats = [
-    { value: 99, decimals: 0, suffix: "", label: "Live streams on one GPU", sub: "584 aggregate fps · RTX PRO 6000", span: "md:col-span-7" },
-    { value: 4.7, decimals: 1, suffix: "×", label: "VLM decode throughput", sub: "41 → 193 tok/s with CUDA graphs", span: "md:col-span-5" },
-    { value: 2.7, decimals: 1, suffix: "×", label: "Cameras per GPU", sub: "per-camera activity gating", span: "md:col-span-5" },
-    { value: 98, decimals: 0, suffix: "%", label: "Alert delivery", sub: "up from 15% · 0.5 s p50 lag", span: "md:col-span-7" },
+    { value: "99/99", label: "Live streams, one GPU", sub: "584 aggregate fps · RTX PRO 6000" },
+    { value: "4.7×", label: "VLM decode throughput", sub: "41 → 193 tok/s · CUDA graphs" },
+    { value: "2.7×", label: "Cameras per GPU", sub: "per-camera activity gating" },
+    { value: "98%", label: "Alert delivery", sub: "up from 15% · 0.5 s p50 lag" },
 ];
 
-const AnimatedCounter = ({ target, decimals, duration = 1600 }) => {
-    const prefersReducedMotion = useReducedMotion();
-    const [count, setCount] = useState(0);
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true });
-
-    useEffect(() => {
-        if (!isInView || prefersReducedMotion) return undefined;
-        const steps = Math.ceil(duration / 16);
-        let step = 0;
-        const timer = setInterval(() => {
-            step += 1;
-            const t = Math.min(1, step / steps);
-            const eased = 1 - Math.pow(1 - t, 3);
-            setCount(target * eased);
-            if (t >= 1) clearInterval(timer);
-        }, 16);
-        return () => clearInterval(timer);
-    }, [isInView, target, duration, prefersReducedMotion]);
-
-    const shown = prefersReducedMotion || !isInView ? target : count;
-    return <span ref={ref}>{shown.toFixed(decimals)}</span>;
-};
-
+/** Telemetry strip — one bordered row, four readouts. */
 const StatsBar = () => (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
-        {stats.map((stat, i) => (
-            <Reveal key={stat.label} delay={i * 0.08} className={stat.span}>
-                <Bezel className="h-full" coreClassName="flex flex-col justify-between gap-10 p-8 md:p-10">
-                    <span className="eyebrow">{stat.label}</span>
-                    <div>
-                        <div className="font-display text-[clamp(56px,7vw,88px)] font-semibold leading-none tracking-[-0.05em] text-ink tabular-nums">
-                            <AnimatedCounter target={stat.value} decimals={stat.decimals} />
-                            <span className="text-blueink">{stat.suffix}</span>
-                        </div>
-                        <p className="mt-3 font-mono text-[12px] text-label">{stat.sub}</p>
-                    </div>
-                </Bezel>
-            </Reveal>
-        ))}
-    </div>
+    <Reveal>
+        <dl className="panel grid grid-cols-2 lg:grid-cols-4">
+            {stats.map((s, i) => (
+                <div
+                    key={s.label}
+                    className={`flex flex-col gap-3 p-5 md:p-7 ${i % 2 ? "border-l border-line" : ""} ${
+                        i > 1 ? "border-t border-line lg:border-t-0" : ""
+                    } ${i === 2 ? "lg:border-l" : ""}`}
+                >
+                    <dt className="eyebrow">{s.label}</dt>
+                    <dd className="font-display text-[clamp(34px,4.2vw,52px)] font-semibold leading-none tracking-[-0.04em] text-ink tabular-nums">
+                        {s.value}
+                    </dd>
+                    <dd className="font-mono text-[12px] text-label">{s.sub}</dd>
+                </div>
+            ))}
+        </dl>
+    </Reveal>
 );
 
 export default StatsBar;
