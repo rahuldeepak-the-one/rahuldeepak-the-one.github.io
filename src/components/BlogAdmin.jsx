@@ -71,8 +71,8 @@ const BlogAdmin = () => {
         return (
             <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-14">
                 <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md">
-                    <div className="det-card p-8">
-                        <span className="det-tag">admin · access</span>
+                    <div className="fig-card p-8">
+                        <span className="fig-tag">FIG. X1 — ACCESS CONTROL</span>
                         <h1 className="font-display text-2xl font-extrabold text-ink">Notes Admin</h1>
                         <p className="mt-1 font-mono text-[12px] text-label">AUTHENTICATION REQUIRED</p>
                         <form onSubmit={handleLogin} className="mt-6">
@@ -126,9 +126,9 @@ const BlogAdmin = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="det-card mt-8 overflow-hidden p-6"
+                        className="fig-card mt-8 overflow-hidden p-6"
                     >
-                        <span className="det-tag">{editing.isNew ? "admin · new note" : "admin · edit note"}</span>
+                        <span className="fig-tag">{editing.isNew ? "FIG. X2 — NEW NOTE" : "FIG. X2 — EDIT NOTE"}</span>
                         <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div>
                                 <label className={labelClass}>Title *</label>
@@ -170,13 +170,13 @@ const BlogAdmin = () => {
 
             <div className="mt-8 flex flex-col gap-4">
                 {posts.length === 0 && !editing && (
-                    <div className="det-card px-8 py-14 text-center">
-                        <span className="det-tag">admin · no notes</span>
+                    <div className="fig-card px-8 py-14 text-center">
+                        <span className="fig-tag">FIG. X3 — EMPTY REGISTER</span>
                         <p className="font-mono text-[13px] text-body">No local drafts yet. Use NEW NOTE to start writing.</p>
                     </div>
                 )}
                 {posts.map(post => (
-                    <div key={post.slug} className="det-card flex items-center justify-between gap-4 px-6 py-4">
+                    <div key={post.slug} className="fig-card flex items-center justify-between gap-4 px-6 py-4">
                         <div className="min-w-0 flex-1">
                             <h3 className="truncate font-display text-[16px] font-bold text-ink">{post.title}</h3>
                             <div className="mt-1 flex items-center gap-3 font-mono text-[11px] text-label">

@@ -20,7 +20,7 @@ const Footer = () => (
                     </a>
                 ))}
             </div>
-            <span>© {new Date().getFullYear()} RAHUL DEEPAK KUCHIPUDI · BENGALURU</span>
+            <span>© {new Date().getFullYear()} K. RAHUL DEEPAK · DWG № RDK-2026 · REV C</span>
         </div>
     </footer>
 );

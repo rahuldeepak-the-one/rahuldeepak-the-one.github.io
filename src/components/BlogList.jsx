@@ -20,7 +20,7 @@ const BlogList = () => {
         <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-14 md:px-12">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h1 className="font-display text-[30px] font-extrabold tracking-[-1px] text-ink">Field Notes</h1>
-                <span className="font-mono text-[11px] text-blueink">NOTES / ALL</span>
+                <span className="font-mono text-[11px] text-blueink">SECTION D — ALL NOTES</span>
             </div>
 
             {/* filter register */}
@@ -65,9 +65,9 @@ const BlogList = () => {
             </div>
 
             {filteredPosts.length === 0 && (
-                <div className="det-card mt-10 px-8 py-14 text-center">
-                    <span className="det-tag det-tag--muted">no detections</span>
-                    <p className="font-mono text-[13px] text-body">No notes tagged “{activeTag}”.</p>
+                <div className="fig-card mt-10 px-8 py-14 text-center">
+                    <span className="fig-tag">FIG. 404 — EMPTY REGISTER</span>
+                    <p className="font-mono text-[13px] text-body">No notes filed under “{activeTag}”.</p>
                     <button
                         onClick={() => setActiveTag("All")}
                         className="mt-4 font-mono text-[12px] font-bold text-blueink hover:text-blueink-soft"

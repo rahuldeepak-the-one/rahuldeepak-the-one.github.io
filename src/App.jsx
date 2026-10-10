@@ -81,19 +81,18 @@ const Education = () => (
 const ContactBlock = () => (
     <div className="grid grid-cols-1 border-[1.5px] border-blueink bg-white sm:grid-cols-[1fr_auto]">
         <div className="border-b border-blueink/35 px-8 py-7 sm:border-b-0 sm:border-r">
-            <p className="mb-2 flex items-center gap-2 font-mono text-[11px] text-label">
-                <span className="live-dot" aria-hidden="true"></span>
-                BENGALURU · OPEN TO CONVERSATIONS
+            <p className="mb-2 font-mono text-[11px] text-label">
+                DRAWN BY: R.D. KUCHIPUDI · CHECKED BY: 99 STREAMS / ONE GPU · SCALE: 2.7× / 4.7× / 98%
             </p>
             <p className="font-display text-[24px] font-extrabold text-ink text-balance">
-                GPU inference, video analytics &amp; ML systems roles.
+                Open to GPU inference, video analytics &amp; ML systems roles.
             </p>
         </div>
         <a
             href="mailto:rahuldeepak.k.11@gmail.com"
             className="flex items-center bg-blueink px-10 py-7 font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft"
         >
-            Email me →
+            APPROVE → EMAIL ME
         </a>
     </div>
 );
@@ -122,7 +121,7 @@ const HomePage = () => {
             <Section
                 id="experience"
                 className="pt-14"
-                header={<SectionHeader title="Experience" tag="01 / WORK" />}
+                header={<SectionHeader title="Experience" tag="SECTION A — REVISION HISTORY" />}
             >
                 <Experience />
             </Section>
@@ -133,7 +132,7 @@ const HomePage = () => {
                 header={
                     <SectionHeader
                         title="Projects"
-                        tag="02 / PROJECTS · ALL ON GITHUB ↗"
+                        tag="SECTION B — SCHEMATICS · ALL FROM GITHUB ↗"
                         tagHref="https://github.com/rahuldeepak-the-one?tab=repositories"
                         tagExternal
                     />
@@ -145,7 +144,7 @@ const HomePage = () => {
             <Section
                 id="skills"
                 className="pt-14"
-                header={<SectionHeader title="Stack" tag="03 / TOOLS" />}
+                header={<SectionHeader title="Skill Schematic" tag="SECTION C — SIGNAL PATH" />}
             >
                 <Skills />
             </Section>
@@ -153,7 +152,7 @@ const HomePage = () => {
             <Section
                 id="education"
                 className="pt-14"
-                header={<SectionHeader title="Education" tag="04 / BACKGROUND" />}
+                header={<SectionHeader title="Credentials" tag="SECTION D — CERTIFIED BY" />}
             >
                 <Education />
             </Section>
@@ -161,7 +160,7 @@ const HomePage = () => {
             <Section
                 id="notes"
                 className="pt-14"
-                header={<SectionHeader title="Notes" tag="05 / BLOG · ALL NOTES →" tagHref="/blog" />}
+                header={<SectionHeader title="Field Notes" tag="SECTION E — BLOG · ALL NOTES →" tagHref="/blog" />}
             >
                 <FieldNotes />
             </Section>

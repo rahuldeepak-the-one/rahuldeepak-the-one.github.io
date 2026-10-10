@@ -33,21 +33,21 @@ const PipelineRow = ({ nodes, ink = false, period, offset }) => (
 );
 
 const Skills = () => (
-    <div className="det-card flex flex-col gap-9 px-9 py-10">
-        <span className="det-tag">stack · frames flow left → right</span>
+    <div className="fig-card flex flex-col gap-9 px-9 py-10">
+        <span className="fig-tag">FIG. C1 — INFERENCE PATH</span>
 
-        {/* narrow screens scroll the pipeline horizontally */}
+        {/* narrow screens scroll the schematic horizontally */}
         <div className="flex flex-col gap-9 overflow-x-auto pt-1">
             <PipelineRow nodes={visionPath} period={2.6} offset={0} />
             <PipelineRow nodes={reasoningPath} ink period={3.2} offset={0.4} />
         </div>
 
         <div className="flex flex-wrap justify-between gap-2 font-mono text-[10px] text-label">
-            <span>TOP: VISION PIPELINE</span>
-            <span>BOTTOM: VLM SERVING &amp; SYSTEMS</span>
+            <span>TOP TRACE: VIDEO INFERENCE PIPELINE</span>
+            <span>BOTTOM TRACE: VLM SERVING &amp; SYSTEMS</span>
         </div>
 
-        <ul className="flex flex-wrap gap-2 border-t border-dashed border-blueink/30 pt-6" aria-label="Also use">
+        <ul className="flex flex-wrap gap-2 border-t border-dashed border-blueink/30 pt-6" aria-label="Bill of materials">
             {toolbox.map((tool) => (
                 <li key={tool} className="chip">{tool}</li>
             ))}

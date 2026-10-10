@@ -1,6 +1,6 @@
 const subsystems = [
     {
-        tag: "IRIS · vision pipeline",
+        tag: "IRIS — VISION PIPELINE",
         title: "Video-analytics platform, DeepStream 6.2 → 9.0",
         stack: ["C++ / GSTREAMER", "DEEPSTREAM", "TENSORRT", "CUDA"],
         points: [
@@ -11,7 +11,7 @@ const subsystems = [
         ],
     },
     {
-        tag: "VSS · vision-language layer",
+        tag: "VSS — VISION-LANGUAGE LAYER",
         title: "VLM reasoning & edge video search",
         stack: ["VLLM", "COSMOS-REASON2", "REDIS STREAMS / MQTT", "LANCEDB"],
         points: [
@@ -24,8 +24,8 @@ const subsystems = [
 
 const Experience = () => (
     <div className="flex flex-col gap-8">
-        <article className="det-card p-8">
-            <span className="det-tag">role · current</span>
+        <article className="fig-card p-8">
+            <span className="fig-tag">FIG. A1 — CURRENT</span>
             <div className="flex flex-wrap items-baseline justify-between gap-4">
                 <h3 className="font-display text-[22px] font-bold text-ink">
                     Software Development Engineer — Avathon
@@ -37,7 +37,7 @@ const Experience = () => (
             <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {subsystems.map((sub) => (
                     <section key={sub.tag} className="border-l-2 border-blueink/40 pl-5">
-                        <p className="font-mono text-[11px] font-bold text-blueink">{sub.tag.toUpperCase()}</p>
+                        <p className="font-mono text-[11px] font-bold text-blueink">{sub.tag}</p>
                         <h4 className="mt-1 font-display text-[16px] font-semibold text-ink">{sub.title}</h4>
                         <ul className="mt-3 flex flex-col gap-2.5">
                             {sub.points.map((point) => (
@@ -57,8 +57,8 @@ const Experience = () => (
             </div>
         </article>
 
-        <article className="det-card flex flex-wrap items-baseline justify-between gap-4 px-8 py-[22px]">
-            <span className="det-tag det-tag--muted">internship</span>
+        <article className="fig-card flex flex-wrap items-baseline justify-between gap-4 px-8 py-[22px]">
+            <span className="fig-tag text-label">FIG. A2</span>
             <h3 className="font-display text-[16px] font-bold text-ink">
                 SDE Intern — Hilti{" "}
                 <span className="font-body text-[13px] font-medium text-label">
