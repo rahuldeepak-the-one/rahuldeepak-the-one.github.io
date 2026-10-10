@@ -11,9 +11,9 @@ const BlogPost = () => {
     if (!post) {
         return (
             <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-14">
-                <div className="fig-card w-full px-8 py-14 text-center">
-                    <span className="fig-tag">FIG. 404 — NOT FOUND</span>
-                    <p className="font-mono text-[13px] text-body">No note filed under “{slug}”.</p>
+                <div className="det-card w-full px-8 py-14 text-center">
+                    <span className="det-tag det-tag--muted">404 · not found</span>
+                    <p className="font-mono text-[13px] text-body">No note at “{slug}”.</p>
                     <Link
                         to="/blog"
                         className="mt-6 inline-block bg-blueink px-[30px] py-[13px] font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft"

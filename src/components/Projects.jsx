@@ -1,22 +1,22 @@
 const projects = [
     {
-        fig: "FIG. B1 — KIRN ⚡",
+        tag: "kirn · open source",
         title: "AI terminal, fully local",
         description:
-            "A real bash shell with a local LLM built in — `?` to ask, `@kirn` to act autonomously, auto error-explain. Linux + Android.",
+            "A Python terminal around bash and Ollama. Full-duplex PTYs keep vim and ssh working; a tool-calling loop feeds command output back to the model for follow-ups and error recovery. Runs on Linux and Android/Termux.",
         tech: "PYTHON · OLLAMA · LOCAL LLMS",
         href: "https://github.com/rahuldeepak-the-one/kirn",
     },
     {
-        fig: "FIG. B2 — LIVE TRANSLATION",
-        title: "Speech→caption, 3 languages, one GPU",
+        tag: "live translation · in use",
+        title: "Speech → captions in 3 languages, one GPU",
         description:
-            "Streaming Whisper ASR → batched EN→ML/TE/HI neural translation → WebSocket broadcast, within ~3–4 GB VRAM on an RTX 3060.",
-        tech: "FASTER-WHISPER · INDICTRANS2 · WEBSOCKET",
+            "Offline faster-whisper → sentence assembly → IndicTrans2 batched EN→ML/TE/HI in one GPU call → WebSocket to projector and phones, within ~3–4 GB VRAM on an RTX 3060. 2,100+ sentences served live at p50 0.5 s STT / 0.6 s MT.",
+        tech: "FASTER-WHISPER · INDICTRANS2 · FASTAPI / WEBSOCKET",
         href: "https://github.com/rahuldeepak-the-one",
     },
     {
-        fig: "FIG. B3 — SKIN-LESION",
+        tag: "skin-lesion · iit bombay",
         title: "Semi-supervised classification",
         description:
             "MixMatch pipeline for 7-class classification over 10k dermatoscopic images. Guide: Prof. Preethi Jyothi, IIT Bombay.",
@@ -24,7 +24,7 @@ const projects = [
         href: "https://github.com/rahuldeepak-the-one",
     },
     {
-        fig: "FIG. B4 — CAR SPEED",
+        tag: "car speed",
         title: "Speed estimation from traffic video",
         description: "Vehicle detection and per-vehicle speed estimation on real traffic footage.",
         tech: "YOLOV5 · OPENCV",
@@ -33,19 +33,19 @@ const projects = [
 ];
 
 const Projects = () => (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {projects.map((project) => (
             <a
-                key={project.fig}
+                key={project.tag}
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="fig-card fig-card--lift flex flex-col gap-2.5 p-7"
+                className="det-card det-card--lift flex flex-col gap-2.5 p-7"
             >
-                <span className="fig-tag">{project.fig}</span>
+                <span className="det-tag">{project.tag}</span>
                 <h3 className="font-display text-[19px] font-bold text-ink">{project.title}</h3>
                 <p className="text-[14px] leading-[1.65] text-body">{project.description}</p>
-                <span className="mt-1 font-mono text-[11px] text-label">{project.tech}</span>
+                <span className="mt-auto pt-1 font-mono text-[11px] text-label">{project.tech}</span>
             </a>
         ))}
     </div>

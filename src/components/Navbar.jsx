@@ -4,10 +4,10 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const sheets = [
-    { id: "experience", label: "SHEET 1: WORK", type: "anchor" },
-    { id: "projects", label: "2: PROJECTS", type: "anchor" },
-    { id: "blog", label: "3: BLOG", type: "route", href: "/blog" },
-    { id: "contact", label: "4: CONTACT", type: "anchor", accent: true },
+    { id: "experience", label: "WORK", type: "anchor" },
+    { id: "projects", label: "PROJECTS", type: "anchor" },
+    { id: "blog", label: "NOTES", type: "route", href: "/blog" },
+    { id: "contact", label: "CONTACT", type: "anchor", accent: true },
 ];
 
 const scrollToSection = (id) => {
@@ -92,9 +92,10 @@ const Navbar = () => {
                         }
                         setIsOpen(false);
                     }}
-                    className="whitespace-nowrap font-mono text-[13px] font-bold text-blueink hover:text-blueink-soft transition-colors"
+                    className="flex items-center gap-2 whitespace-nowrap font-mono text-[13px] font-bold text-blueink hover:text-blueink-soft transition-colors"
                 >
-                    DWG № RDK-2026 · REV C
+                    <span className="live-dot" aria-hidden="true"></span>
+                    RAHUL DEEPAK
                 </Link>
 
                 {/* Desktop sheet links */}
@@ -106,7 +107,7 @@ const Navbar = () => {
                 <div className="md:hidden">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        aria-label={isOpen ? "Close sheet index" : "Open sheet index"}
+                        aria-label={isOpen ? "Close menu" : "Open menu"}
                         aria-expanded={isOpen}
                         className="-mr-2 p-2 text-blueink transition-colors hover:text-ink"
                     >

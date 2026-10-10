@@ -1,7 +1,13 @@
-const topTrace = ["CUDA", "TENSORRT", "DEEPSTREAM", "GSTREAMER"];
-const bottomTrace = ["VLLM", "PYTORCH", "KAFKA / REDIS", "C++ / PYTHON"];
+const visionPath = ["GSTREAMER", "DEEPSTREAM", "TENSORRT", "CUDA"];
+const reasoningPath = ["VLLM", "PYTORCH", "REDIS / MQTT", "FASTAPI"];
+const toolbox = [
+    "C++", "Python", "C", "Bash", "SQL",
+    "Triton", "ONNX Runtime", "FP16 / INT8", "CUDA graphs",
+    "Hugging Face", "OpenCV", "LanceDB",
+    "Docker", "Kubernetes", "Kafka", "Linux", "GitLab CI/CD", "meson / ninja",
+];
 
-const CircuitRow = ({ nodes, ink = false, period, offset }) => (
+const PipelineRow = ({ nodes, ink = false, period, offset }) => (
     <div className="flex min-w-max items-center md:min-w-0" role="list">
         {nodes.map((node, i) => (
             <span key={node} className="contents">
@@ -27,19 +33,25 @@ const CircuitRow = ({ nodes, ink = false, period, offset }) => (
 );
 
 const Skills = () => (
-    <div className="fig-card flex flex-col gap-9 px-9 py-10">
-        <span className="fig-tag">FIG. C1 — INFERENCE PATH</span>
+    <div className="det-card flex flex-col gap-9 px-9 py-10">
+        <span className="det-tag">stack · frames flow left → right</span>
 
-        {/* narrow screens scroll the schematic horizontally */}
+        {/* narrow screens scroll the pipeline horizontally */}
         <div className="flex flex-col gap-9 overflow-x-auto pt-1">
-            <CircuitRow nodes={topTrace} period={2.6} offset={0} />
-            <CircuitRow nodes={bottomTrace} ink period={3.2} offset={0.4} />
+            <PipelineRow nodes={visionPath} period={2.6} offset={0} />
+            <PipelineRow nodes={reasoningPath} ink period={3.2} offset={0.4} />
         </div>
 
         <div className="flex flex-wrap justify-between gap-2 font-mono text-[10px] text-label">
-            <span>TOP TRACE: EDGE INFERENCE PIPELINE</span>
-            <span>BOTTOM TRACE: MODEL SERVING &amp; SYSTEMS</span>
+            <span>TOP: VISION PIPELINE</span>
+            <span>BOTTOM: VLM SERVING &amp; SYSTEMS</span>
         </div>
+
+        <ul className="flex flex-wrap gap-2 border-t border-dashed border-blueink/30 pt-6" aria-label="Also use">
+            {toolbox.map((tool) => (
+                <li key={tool} className="chip">{tool}</li>
+            ))}
+        </ul>
     </div>
 );
 

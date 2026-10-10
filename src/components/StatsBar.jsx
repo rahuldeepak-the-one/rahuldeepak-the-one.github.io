@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 
 const stats = [
-    { value: 3.3, decimals: 1, suffix: "×", label: "DETECTOR LATENCY · 15.5→4.7 MS", accent: true },
-    { value: 7, decimals: 0, suffix: "×", label: "TRACKING P50 · 2.6→0.37 MS", accent: true },
-    { value: 4.3, decimals: 1, suffix: "×", label: "VLM THROUGHPUT · 42→180 TOK/S", accent: true },
-    { value: 10, decimals: 0, suffix: "+", label: "PRODUCTION SITES LIVE", accent: false },
+    { value: 99, decimals: 0, suffix: "", label: "LIVE STREAMS ON ONE GPU · 584 FPS", accent: true },
+    { value: 2.7, decimals: 1, suffix: "×", label: "CAMERAS PER GPU · ACTIVITY GATING", accent: true },
+    { value: 4.7, decimals: 1, suffix: "×", label: "VLM DECODE · 41→193 TOK/S", accent: true },
+    { value: 98, decimals: 0, suffix: "%", label: "ALERT DELIVERY · UP FROM 15%", accent: false },
 ];
 
 // dashed internal dividers for 4-col / 2×2 / 1-col layouts

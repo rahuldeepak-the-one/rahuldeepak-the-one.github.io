@@ -1,53 +1,65 @@
-import ElectronField from "./ElectronField";
-import DimensionLine from "./DimensionLine";
+import DetectionField from "./DetectionField";
+
+const stages = ["DECODE", "DETECT", "TRACK", "VLM VERIFY", "ALERT"];
 
 const Hero = () => {
-    const openProjects = (e) => {
+    const openWork = (e) => {
         e.preventDefault();
-        const element = document.getElementById("projects");
+        const element = document.getElementById("experience");
         if (!element) return;
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         element.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
     };
 
     return (
-        <section id="hero" className="relative min-h-[500px]">
-            <ElectronField />
+        <section id="hero" className="relative min-h-[540px]">
+            <DetectionField />
 
-            {/* Text layer is pointer-transparent so the field reacts to the cursor */}
-            <div className="pointer-events-none relative mx-auto flex min-h-[500px] max-w-[1200px] flex-col justify-center gap-[18px] px-6 py-16 md:px-16">
-                <p className="font-mono text-[12px] tracking-[2px] text-blueink">
-                    TITLE BLOCK — ENGINEER, EDGE-AI INFERENCE · IIT BOMBAY CSE
+            {/* Text layer is pointer-transparent so the field tracks the cursor */}
+            <div className="pointer-events-none relative mx-auto flex min-h-[540px] max-w-[1200px] flex-col justify-center gap-5 px-6 py-16 md:px-16">
+                <p className="flex items-center gap-2 font-mono text-[12px] tracking-[1px] text-blueink">
+                    <span className="live-dot" aria-hidden="true"></span>
+                    SDE @ AVATHON · IIT BOMBAY CSE
                 </p>
 
                 <h1 className="font-display text-[clamp(40px,8vw,72px)] font-extrabold leading-[1.02] tracking-[-2px] text-ink">
-                    RAHUL DEEPAK
+                    Rahul Deepak
                     <br />
-                    KUCHIPUDI
+                    Kuchipudi
                 </h1>
 
-                <DimensionLine className="max-w-[640px]" />
-
-                <p className="max-w-[640px] font-mono text-[14px] leading-[1.8] text-body">
-                    SPEC: owns both halves of the stack — DeepStream/TensorRT/CUDA vision pipeline + the
-                    vLLM-served VLM layer reasoning over it. DEPLOYED: 10+ production sites.
+                <p className="max-w-[600px] text-[18px] leading-[1.6] text-body text-pretty">
+                    I build GPU video-analytics pipelines and the vision-language models that reason
+                    over them — from TensorRT kernels to alerts on a dashboard.
                 </p>
+
+                <ol className="flex flex-wrap items-center gap-y-2 font-mono text-[11px] text-label" aria-label="Pipeline I work on">
+                    {stages.map((stage, i) => (
+                        <li key={stage} className="flex items-center">
+                            {i > 0 && <span className="px-2 text-blueink/50" aria-hidden="true">→</span>}
+                            <span className="border border-blueink/35 bg-white/70 px-2 py-1">{stage}</span>
+                        </li>
+                    ))}
+                </ol>
 
                 <div className="pointer-events-auto mt-2 flex flex-wrap gap-[14px]">
                     <a
-                        href="#projects"
-                        onClick={openProjects}
-                        className="bg-blueink px-[30px] py-[13px] font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft"
+                        href="#experience"
+                        onClick={openWork}
+                        className="btn-solid"
                     >
-                        OPEN SHEET 2 →
+                        See the work →
+                    </a>
+                    <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                        Resume ↗
                     </a>
                     <a
                         href="https://github.com/rahuldeepak-the-one"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="border border-dashed border-blueink/55 bg-white/60 px-[30px] py-[13px] font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
+                        className="btn-ghost"
                     >
-                        GITHUB ↗
+                        GitHub ↗
                     </a>
                 </div>
             </div>

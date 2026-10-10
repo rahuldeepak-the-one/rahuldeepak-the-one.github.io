@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  /* "Blueprint on Paper" palette — electric-blue ink on warm paper,
-     per the approved 3a design handoff */
+  /* electric-blue ink on warm paper; components read as a
+     video-analytics overlay (detection boxes, tags, live dot) */
   --color-paper: #f7f7f4;
   --color-ink: #16181d;
   --color-blueink: #2f4fe0;
@@ -60,8 +60,9 @@
 }
 
 @layer components {
-  /* dashed "FIG." drawing box — hover turns the ink solid and lifts */
-  .fig-card {
+  /* detection box — dashed outline with heavy corner ticks, like a
+     tracker overlay; hover locks on (solid ink) and lifts */
+  .det-card {
     position: relative;
     border: 1px dashed rgba(47, 79, 224, 0.45);
     background: rgba(255, 255, 255, 0.6);
@@ -71,27 +72,105 @@
       transform 250ms ease;
   }
 
-  .fig-card:hover {
+  .det-card::before,
+  .det-card::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--color-blueink);
+    border-style: solid;
+    pointer-events: none;
+  }
+
+  .det-card::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
+  }
+
+  .det-card::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 2px 2px 0;
+  }
+
+  .det-card:hover {
     border-style: solid;
     border-color: var(--color-blueink);
     box-shadow: 0 12px 32px rgba(47, 79, 224, 0.08);
   }
 
-  .fig-card--lift:hover {
+  .det-card--lift:hover {
     transform: translateY(-3px);
   }
 
-  /* figure label floating over the top border */
-  .fig-tag {
+  /* class label sitting on the top border, filled like a detector tag */
+  .det-tag {
     position: absolute;
-    top: -9px;
-    left: 24px;
-    background: var(--color-paper);
-    padding: 0 10px;
+    top: -10px;
+    left: 20px;
+    background: var(--color-blueink);
+    color: #ffffff;
+    padding: 2px 8px;
     white-space: nowrap;
     font-family: var(--font-mono);
     font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .det-tag--muted {
+    background: var(--color-label);
+  }
+
+  /* "recording" indicator */
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-blueink);
+    box-shadow: 0 0 0 0 rgba(47, 79, 224, 0.5);
+    animation: livepulse 2s ease-out infinite;
+  }
+
+  @keyframes livepulse {
+    0% { box-shadow: 0 0 0 0 rgba(47, 79, 224, 0.5); }
+    70% { box-shadow: 0 0 0 7px rgba(47, 79, 224, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(47, 79, 224, 0); }
+  }
+
+  .btn-solid {
+    background: var(--color-blueink);
+    color: #ffffff;
+    padding: 13px 30px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    transition: background-color 200ms ease, transform 150ms ease;
+  }
+
+  .btn-solid:hover {
+    background: var(--color-blueink-soft);
+  }
+
+  .btn-ghost {
+    border: 1px dashed rgba(47, 79, 224, 0.55);
+    background: rgba(255, 255, 255, 0.7);
     color: var(--color-blueink);
+    padding: 13px 30px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: border-color 200ms ease, transform 150ms ease;
+  }
+
+  .btn-ghost:hover {
+    border-style: solid;
+    border-color: var(--color-blueink);
+  }
+
+  .btn-solid:active,
+  .btn-ghost:active {
+    transform: translateY(1px);
   }
 
   .chip {
@@ -103,7 +182,7 @@
     padding: 4px 12px;
   }
 
-  /* circuit trace with a glowing charge travelling along it */
+  /* pipeline link with a frame travelling along it */
   .trace {
     position: relative;
     flex: 1;
