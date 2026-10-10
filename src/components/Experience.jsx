@@ -1,8 +1,11 @@
+import { Bezel, Reveal } from "./ui";
+
 const subsystems = [
     {
-        tag: "IRIS — VISION PIPELINE",
+        tag: "IRIS · vision pipeline",
         title: "Video-analytics platform, DeepStream 6.2 → 9.0",
-        stack: ["C++ / GSTREAMER", "DEEPSTREAM", "TENSORRT", "CUDA"],
+        stack: ["C++ / GStreamer", "DeepStream", "TensorRT", "CUDA"],
+        span: "md:col-span-7",
         points: [
             "Core engineer on the rewrite; split the C++/GStreamer core from cloud and use-case code behind a stable plugin ABI — 3 shared libraries, 12 use-case modules that ship independently.",
             "~2.7× per-GPU camera capacity at 25% activity via per-camera activity gating; 99/99 active streams at 584 aggregate fps on one RTX PRO 6000.",
@@ -11,9 +14,10 @@ const subsystems = [
         ],
     },
     {
-        tag: "VSS — VISION-LANGUAGE LAYER",
+        tag: "VSS · vision-language layer",
         title: "VLM reasoning & edge video search",
-        stack: ["VLLM", "COSMOS-REASON2", "REDIS STREAMS / MQTT", "LANCEDB"],
+        stack: ["vLLM", "Cosmos-Reason2", "Redis Streams / MQTT", "LanceDB"],
+        span: "md:col-span-5",
         points: [
             "Architected VSS: a vLLM-served VLM (Cosmos-Reason2-2B) for scene descriptions and alert verification, fed by custom C++ GStreamer plugins with GPU-resident frames — 1.77 s p50 per 10 s window.",
             "4.7× VLM decode (41 → 193 tok/s) and 79% lower verdict latency (1.95 → 0.41 s) by enabling CUDA graphs after profiling showed 77% GPU idle time.",
@@ -23,50 +27,57 @@ const subsystems = [
 ];
 
 const Experience = () => (
-    <div className="flex flex-col gap-8">
-        <article className="fig-card p-8">
-            <span className="fig-tag">FIG. A1 — CURRENT</span>
-            <div className="flex flex-wrap items-baseline justify-between gap-4">
-                <h3 className="font-display text-[22px] font-bold text-ink">
-                    Software Development Engineer — Avathon
+    <div className="flex flex-col gap-4">
+        <Reveal className="flex flex-wrap items-end justify-between gap-4 px-2 pb-4">
+            <div>
+                <h3 className="font-display text-[clamp(24px,3vw,32px)] font-semibold tracking-[-0.03em] text-ink">
+                    Software Development Engineer, Avathon
                 </h3>
-                <span className="font-mono text-[11px] text-blueink">JUL 2025 – PRESENT · BENGALURU</span>
+                <p className="mt-1 text-[15px] text-label">Formerly SparkCognition · Bengaluru</p>
             </div>
-            <p className="mt-1 text-[14px] text-label">Formerly SparkCognition</p>
+            <span className="eyebrow eyebrow--accent">
+                <span className="live-dot" aria-hidden="true"></span>
+                Jul 2025 — present
+            </span>
+        </Reveal>
 
-            <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {subsystems.map((sub) => (
-                    <section key={sub.tag} className="border-l-2 border-blueink/40 pl-5">
-                        <p className="font-mono text-[11px] font-bold text-blueink">{sub.tag}</p>
-                        <h4 className="mt-1 font-display text-[16px] font-semibold text-ink">{sub.title}</h4>
-                        <ul className="mt-3 flex flex-col gap-2.5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
+            {subsystems.map((sub, i) => (
+                <Reveal key={sub.tag} delay={i * 0.1} className={sub.span}>
+                    <Bezel coreClassName="flex flex-col gap-6 p-8 md:p-10">
+                        <div className="flex flex-col gap-3">
+                            <span className="eyebrow">{sub.tag}</span>
+                            <h4 className="font-display text-[22px] font-semibold tracking-[-0.02em] text-ink">{sub.title}</h4>
+                        </div>
+                        <ul className="flex flex-col gap-4">
                             {sub.points.map((point) => (
-                                <li key={point} className="flex gap-2.5 text-[14px] leading-[1.65] text-body">
-                                    <span className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-blueink/60" aria-hidden="true"></span>
+                                <li key={point} className="flex gap-3 text-[15px] leading-[1.65] text-body">
+                                    <span className="mt-[10px] h-1 w-1 shrink-0 rounded-full bg-blueink" aria-hidden="true"></span>
                                     <span>{point}</span>
                                 </li>
                             ))}
                         </ul>
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        <div className="mt-auto flex flex-wrap gap-2 pt-2">
                             {sub.stack.map((chip) => (
                                 <span key={chip} className="chip">{chip}</span>
                             ))}
                         </div>
-                    </section>
-                ))}
-            </div>
-        </article>
+                    </Bezel>
+                </Reveal>
+            ))}
 
-        <article className="fig-card flex flex-wrap items-baseline justify-between gap-4 px-8 py-[22px]">
-            <span className="fig-tag text-label">FIG. A2</span>
-            <h3 className="font-display text-[16px] font-bold text-ink">
-                SDE Intern — Hilti{" "}
-                <span className="font-body text-[13px] font-medium text-label">
-                    · GitLab CI/CD + Docker + WiX installer pipeline, deploys 2 h → 10 min
-                </span>
-            </h3>
-            <span className="font-mono text-[11px] text-label">MAY – JUL 2024 · PUNE</span>
-        </article>
+            <Reveal className="md:col-span-12">
+                <Bezel coreClassName="flex flex-wrap items-center justify-between gap-4 px-8 py-6 md:px-10">
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="font-display text-[17px] font-semibold text-ink">SDE Intern, Hilti</span>
+                        <span className="text-[14px] text-body">
+                            GitLab CI/CD + Docker + WiX installer pipeline — deploys 2 h → 10 min
+                        </span>
+                    </div>
+                    <span className="font-mono text-[12px] text-label">May – Jul 2024 · Pune</span>
+                </Bezel>
+            </Reveal>
+        </div>
     </div>
 );
 

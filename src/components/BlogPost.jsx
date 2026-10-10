@@ -10,7 +10,7 @@ const BlogPost = () => {
 
     if (!post) {
         return (
-            <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-14">
+            <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-32">
                 <div className="fig-card w-full px-8 py-14 text-center">
                     <span className="fig-tag">FIG. 404 — NOT FOUND</span>
                     <p className="font-mono text-[13px] text-body">No note filed under “{slug}”.</p>
@@ -32,7 +32,7 @@ const BlogPost = () => {
     };
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-[720px] px-6 pb-20 pt-14">
+        <div className="mx-auto min-h-screen w-full max-w-[720px] px-6 pb-20 pt-32">
             <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
                 ← ALL NOTES
             </Link>

@@ -1,19 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
+import { Bezel, Reveal } from "./ui";
 
+// bento spans: two wide hero numbers, two narrower supporting ones
 const stats = [
-    { value: 99, decimals: 0, suffix: "", label: "LIVE STREAMS ON ONE GPU · 584 FPS", accent: true },
-    { value: 2.7, decimals: 1, suffix: "×", label: "CAMERAS PER GPU · ACTIVITY GATING", accent: true },
-    { value: 4.7, decimals: 1, suffix: "×", label: "VLM DECODE · 41→193 TOK/S", accent: true },
-    { value: 98, decimals: 0, suffix: "%", label: "ALERT DELIVERY · UP FROM 15%", accent: false },
-];
-
-// dashed internal dividers for 4-col / 2×2 / 1-col layouts
-const dividerClasses = [
-    "border-b sm:border-r lg:border-b-0",
-    "border-b lg:border-b-0 lg:border-r",
-    "max-sm:border-b sm:border-r",
-    "",
+    { value: 99, decimals: 0, suffix: "", label: "Live streams on one GPU", sub: "584 aggregate fps · RTX PRO 6000", span: "md:col-span-7" },
+    { value: 4.7, decimals: 1, suffix: "×", label: "VLM decode throughput", sub: "41 → 193 tok/s with CUDA graphs", span: "md:col-span-5" },
+    { value: 2.7, decimals: 1, suffix: "×", label: "Cameras per GPU", sub: "per-camera activity gating", span: "md:col-span-5" },
+    { value: 98, decimals: 0, suffix: "%", label: "Alert delivery", sub: "up from 15% · 0.5 s p50 lag", span: "md:col-span-7" },
 ];
 
 const AnimatedCounter = ({ target, decimals, duration = 1600 }) => {
@@ -41,22 +35,21 @@ const AnimatedCounter = ({ target, decimals, duration = 1600 }) => {
 };
 
 const StatsBar = () => (
-    <div className="border-y border-blueink/35 bg-white/55">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat, i) => (
-                <div key={stat.label} className={`border-dashed border-blueink/30 px-8 py-[26px] ${dividerClasses[i]}`}>
-                    <div
-                        className={`font-display text-[34px] font-extrabold tabular-nums ${
-                            stat.accent ? "text-blueink" : "text-ink"
-                        }`}
-                    >
-                        <AnimatedCounter target={stat.value} decimals={stat.decimals} />
-                        {stat.suffix}
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
+        {stats.map((stat, i) => (
+            <Reveal key={stat.label} delay={i * 0.08} className={stat.span}>
+                <Bezel className="h-full" coreClassName="flex flex-col justify-between gap-10 p-8 md:p-10">
+                    <span className="eyebrow">{stat.label}</span>
+                    <div>
+                        <div className="font-display text-[clamp(56px,7vw,88px)] font-semibold leading-none tracking-[-0.05em] text-ink tabular-nums">
+                            <AnimatedCounter target={stat.value} decimals={stat.decimals} />
+                            <span className="text-blueink">{stat.suffix}</span>
+                        </div>
+                        <p className="mt-3 font-mono text-[12px] text-label">{stat.sub}</p>
                     </div>
-                    <div className="mt-1 font-mono text-[11px] text-label">{stat.label}</div>
-                </div>
-            ))}
-        </div>
+                </Bezel>
+            </Reveal>
+        ))}
     </div>
 );
 

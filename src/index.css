@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* "Blueprint on Paper" palette — electric-blue ink on warm paper,
-     per the approved 3a design handoff */
-  --color-paper: #f7f7f4;
-  --color-ink: #16181d;
+  /* "Soft Structuralism" — silver-white paper, near-black ink, one electric
+     blue accent; depth comes from nested bezels and diffused shadows */
+  --color-paper: #f2f2ef;
+  --color-ink: #111214;
   --color-blueink: #2f4fe0;
   --color-blueink-soft: #5b74e8;
-  --color-body: #55596a;
-  --color-label: #6b7080;
+  --color-body: #4e5260;
+  --color-label: #7a7e8b;
 
-  --font-display: "Sora", sans-serif;
-  --font-body: "Manrope", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Geist", sans-serif;
+  --font-body: "Geist", sans-serif;
+  --font-mono: "Geist Mono", monospace;
+
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @layer base {
@@ -24,6 +26,18 @@
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* fixed film grain — never attached to a scrolling element */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection {
@@ -34,12 +48,14 @@
   :focus-visible {
     outline: 2px solid var(--color-blueink);
     outline-offset: 3px;
+    border-radius: 8px;
   }
 
   code {
     background-color: #ffffff;
-    border: 1px solid rgba(47, 79, 224, 0.3);
-    padding: 0 0.3rem;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.08);
+    padding: 0.05rem 0.35rem;
     font-size: 0.85em;
     font-family: var(--font-mono);
     color: var(--color-blueink);
@@ -60,60 +76,98 @@
 }
 
 @layer components {
-  /* dashed "FIG." drawing box — hover turns the ink solid and lifts */
-  .fig-card {
-    position: relative;
-    border: 1px dashed rgba(47, 79, 224, 0.45);
-    background: rgba(255, 255, 255, 0.6);
-    transition:
-      border-color 250ms ease,
-      box-shadow 250ms ease,
-      transform 250ms ease;
+  /* Double bezel: an aluminium tray (outer) holding a glass plate (inner) */
+  .bezel {
+    border-radius: 2rem;
+    padding: 6px;
+    background: rgba(17, 18, 20, 0.035);
+    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.05);
+    transition: transform 700ms var(--ease-spring), box-shadow 700ms var(--ease-spring);
   }
 
-  .fig-card:hover {
-    border-style: solid;
-    border-color: var(--color-blueink);
-    box-shadow: 0 12px 32px rgba(47, 79, 224, 0.08);
+  .bezel-core {
+    height: 100%;
+    border-radius: calc(2rem - 6px);
+    background: #fbfbfa;
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.9),
+      0 1px 2px rgba(30, 36, 70, 0.04),
+      0 24px 48px -24px rgba(30, 36, 70, 0.12);
   }
 
-  .fig-card--lift:hover {
-    transform: translateY(-3px);
+  .bezel--lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgba(47, 79, 224, 0.18),
+      0 40px 80px -40px rgba(47, 79, 224, 0.28);
   }
 
-  /* figure label floating over the top border */
-  .fig-tag {
-    position: absolute;
-    top: -9px;
-    left: 24px;
-    background: var(--color-paper);
-    padding: 0 10px;
-    white-space: nowrap;
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    border-radius: 9999px;
+    padding: 4px 12px;
+    background: #ffffff;
+    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.07);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-label);
+  }
+
+  .eyebrow--accent {
     color: var(--color-blueink);
   }
 
   .chip {
+    border-radius: 9999px;
+    padding: 4px 11px;
+    background: rgba(47, 79, 224, 0.06);
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--color-blueink);
-    border: 1px solid rgba(47, 79, 224, 0.4);
-    background: #ffffff;
-    padding: 4px 12px;
   }
 
-  /* circuit trace with a glowing charge travelling along it */
+  /* legacy names still used by blog/admin pages */
+  .fig-card {
+    position: relative;
+    border-radius: 1.5rem;
+    background: #fbfbfa;
+    box-shadow:
+      0 0 0 1px rgba(17, 18, 20, 0.06),
+      0 24px 48px -24px rgba(30, 36, 70, 0.12);
+  }
+
+  .fig-tag {
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    border-radius: 9999px;
+    padding: 3px 11px;
+    background: #ffffff;
+    box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.08);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--color-blueink);
+  }
+
+  /* pipeline link with a frame travelling along it */
   .trace {
     position: relative;
     flex: 1;
     min-width: 24px;
-    height: 1.5px;
-    background: rgba(47, 79, 224, 0.35);
+    height: 1px;
+    background: rgba(47, 79, 224, 0.3);
   }
 
   .trace--ink {
-    background: rgba(22, 24, 29, 0.3);
+    background: rgba(17, 18, 20, 0.2);
   }
 
   .trace-dot {
@@ -124,8 +178,8 @@
     height: 7px;
     border-radius: 50%;
     background: var(--color-blueink);
-    box-shadow: 0 0 8px rgba(47, 79, 224, 0.8);
-    animation: tracerun 3s linear infinite;
+    box-shadow: 0 0 10px rgba(47, 79, 224, 0.7);
+    animation: tracerun 3s cubic-bezier(0.45, 0, 0.2, 1) infinite;
   }
 
   .trace-dot--ink {
@@ -138,15 +192,28 @@
       left: 0%;
       opacity: 0;
     }
-    8% {
+    10% {
       opacity: 1;
     }
-    92% {
+    90% {
       opacity: 1;
     }
     100% {
       left: 100%;
       opacity: 0;
     }
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-blueink);
+    animation: livepulse 2.4s var(--ease-spring) infinite;
+  }
+
+  @keyframes livepulse {
+    0% { box-shadow: 0 0 0 0 rgba(47, 79, 224, 0.45); }
+    80%, 100% { box-shadow: 0 0 0 8px rgba(47, 79, 224, 0); }
   }
 }

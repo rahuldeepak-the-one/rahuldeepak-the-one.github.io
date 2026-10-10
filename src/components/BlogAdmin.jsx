@@ -69,7 +69,7 @@ const BlogAdmin = () => {
 
     if (!authenticated) {
         return (
-            <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-14">
+            <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-32">
                 <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md">
                     <div className="fig-card p-8">
                         <span className="fig-tag">FIG. X1 — ACCESS CONTROL</span>
@@ -103,7 +103,7 @@ const BlogAdmin = () => {
     }
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-14 md:px-12">
+        <div className="mx-auto min-h-screen w-full max-w-[1200px] px-6 pb-20 pt-32 md:px-12">
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
                     <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
