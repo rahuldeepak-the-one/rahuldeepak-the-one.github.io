@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import blogPosts, { noteLabel } from "../data/blogData";
-import DimensionLine from "./DimensionLine";
 
 const BlogPost = () => {
     const { slug } = useParams();
@@ -11,12 +10,12 @@ const BlogPost = () => {
     if (!post) {
         return (
             <div className="mx-auto flex min-h-screen w-full max-w-[720px] items-center px-6 pb-20 pt-14">
-                <div className="fig-card w-full px-8 py-14 text-center">
-                    <span className="fig-tag">FIG. 404 — NOT FOUND</span>
-                    <p className="font-mono text-[13px] text-body">No note filed under “{slug}”.</p>
+                <div className="rounded-md border border-line-2 bg-night-2 w-full px-8 py-14 text-center">
+                    <span className="mb-4 block font-mono text-[11px] text-accent">FIG. 404 — NOT FOUND</span>
+                    <p className="font-mono text-[13px] text-soft">No note filed under “{slug}”.</p>
                     <Link
                         to="/blog"
-                        className="mt-6 inline-block bg-blueink px-[30px] py-[13px] font-mono text-[13px] font-bold text-white transition-colors hover:bg-blueink-soft"
+                        className="mt-6 inline-block bg-accent px-[30px] py-[13px] font-mono text-[13px] font-bold text-night transition-colors hover:bg-white"
                     >
                         ← ALL NOTES
                     </Link>
@@ -33,20 +32,20 @@ const BlogPost = () => {
 
     return (
         <div className="mx-auto min-h-screen w-full max-w-[720px] px-6 pb-20 pt-14">
-            <Link to="/blog" className="font-mono text-[12px] text-blueink transition-colors hover:text-blueink-soft">
+            <Link to="/blog" className="font-mono text-[12px] text-accent transition-colors hover:text-accent">
                 ← ALL NOTES
             </Link>
 
             <header className="mt-8">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[11px] text-label">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[11px] text-dim">
                     <span>
                         {noteLabel(post.slug)} · {post.date} · {post.readTime.toUpperCase()}
                     </span>
-                    <button onClick={copyLink} className="text-blueink transition-colors hover:text-blueink-soft">
+                    <button onClick={copyLink} className="text-accent transition-colors hover:text-accent">
                         {linkCopied ? "LINK COPIED ✓" : "SHARE ↗"}
                     </button>
                 </div>
-                <h1 className="mt-3 font-display text-[clamp(28px,5vw,40px)] font-extrabold leading-[1.15] tracking-[-1px] text-ink">
+                <h1 className="mt-3 font-display text-[clamp(28px,5vw,40px)] font-extrabold leading-[1.15] tracking-[-1px] text-star">
                     {post.title}
                 </h1>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -56,14 +55,14 @@ const BlogPost = () => {
                 </div>
             </header>
 
-            <DimensionLine animated={false} className="my-10" />
+            <hr className="my-10 border-line" />
 
-            <article className="text-[16px] leading-[1.8] text-body">{renderContent(post.content)}</article>
+            <article className="text-[16px] leading-[1.8] text-soft">{renderContent(post.content)}</article>
 
-            <div className="mt-16 border-t border-blueink/25 pt-8">
+            <div className="mt-16 border-t border-accent/25 pt-8">
                 <Link
                     to="/blog"
-                    className="inline-block border border-dashed border-blueink/55 bg-white/60 px-[30px] py-[13px] font-mono text-[13px] text-blueink transition-colors hover:border-solid hover:border-blueink"
+                    className="inline-block border border-accent/55 bg-night-2 px-[30px] py-[13px] font-mono text-[13px] text-accent transition-colors hover:border-solid hover:border-accent"
                 >
                     ← ALL NOTES
                 </Link>
@@ -81,17 +80,17 @@ function renderContent(content) {
         <div key={key++} className="my-6 overflow-x-auto">
             <table className="w-full border-collapse text-sm">
                 <thead>
-                    <tr className="border-b border-blueink/35">
+                    <tr className="border-b border-accent/35">
                         {tRows[0]?.map((c, ci) => (
-                            <th key={ci} className="px-3 py-2 text-left font-mono text-[12px] font-bold text-blueink">{c}</th>
+                            <th key={ci} className="px-3 py-2 text-left font-mono text-[12px] font-bold text-accent">{c}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
                     {tRows.slice(1).map((r, ri) => (
-                        <tr key={ri} className="border-b border-blueink/15 hover:bg-blueink/5">
+                        <tr key={ri} className="border-b border-accent/15 hover:bg-accent/5">
                             {r.map((c, ci) => (
-                                <td key={ci} className="px-3 py-2 text-body">{c}</td>
+                                <td key={ci} className="px-3 py-2 text-soft">{c}</td>
                             ))}
                         </tr>
                     ))}
@@ -105,8 +104,8 @@ function renderContent(content) {
         if (line.trim().startsWith("```")) {
             if (inCode) {
                 elements.push(
-                    <pre key={key++} className="my-6 overflow-x-auto border border-dashed border-blueink/45 bg-white p-4 font-mono text-[13px] leading-relaxed text-ink">
-                        <code className="border-0 bg-transparent p-0 text-[inherit] text-ink">{codeLines.join("\n")}</code>
+                    <pre key={key++} className="my-6 overflow-x-auto border border-accent/45 bg-night-2 p-4 font-mono text-[13px] leading-relaxed text-star">
+                        <code className="border-0 bg-transparent p-0 text-[inherit] text-star">{codeLines.join("\n")}</code>
                     </pre>
                 );
                 codeLines = []; inCode = false;
@@ -127,26 +126,26 @@ function renderContent(content) {
 
         if (line.startsWith("## ")) {
             elements.push(
-                <h2 key={key++} className="mt-10 mb-4 border-l-[3px] border-blueink pl-3 font-display text-2xl font-bold text-ink">
+                <h2 key={key++} className="mt-10 mb-4 border-l-[3px] border-accent pl-3 font-display text-2xl font-bold text-star">
                     {line.slice(3)}
                 </h2>
             );
         } else if (line.startsWith("### ")) {
-            elements.push(<h3 key={key++} className="mt-8 mb-3 font-display text-xl font-bold text-ink">{line.slice(4)}</h3>);
+            elements.push(<h3 key={key++} className="mt-8 mb-3 font-display text-xl font-bold text-star">{line.slice(4)}</h3>);
         } else if (/^\d+\.\s/.test(line.trim())) {
             const c = line.replace(/^\d+\.\s/, "");
             elements.push(
                 <div key={key++} className="mb-2 ml-4 flex items-start gap-3">
-                    <span className="mt-0.5 shrink-0 font-mono text-[14px] font-bold text-blueink">{line.match(/^\d+/)[0]}.</span>
-                    <span dangerouslySetInnerHTML={{ __html: c.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-ink">$1</strong>') }} />
+                    <span className="mt-0.5 shrink-0 font-mono text-[14px] font-bold text-accent">{line.match(/^\d+/)[0]}.</span>
+                    <span dangerouslySetInnerHTML={{ __html: c.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-star">$1</strong>') }} />
                 </div>
             );
         } else if (line.trim().startsWith("- ")) {
             const c = line.trim().slice(2);
             elements.push(
                 <div key={key++} className="mb-2 ml-4 flex items-start gap-3">
-                    <span className="mt-2 h-[7px] w-[7px] shrink-0 rounded-full bg-blueink"></span>
-                    <span dangerouslySetInnerHTML={{ __html: c.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-ink">$1</strong>') }} />
+                    <span className="mt-2 h-[7px] w-[7px] shrink-0 rounded-full bg-accent"></span>
+                    <span dangerouslySetInnerHTML={{ __html: c.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-star">$1</strong>') }} />
                 </div>
             );
         } else if (line.trim()) {
@@ -157,7 +156,7 @@ function renderContent(content) {
                     dangerouslySetInnerHTML={{
                         __html: line
                             .replace(/`([^`]+)`/g, "<code>$1</code>")
-                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-ink">$1</strong>'),
+                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-star">$1</strong>'),
                     }}
                 />
             );

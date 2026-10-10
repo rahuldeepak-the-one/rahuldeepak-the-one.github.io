@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const sheets = [
-    { id: "experience", label: "SHEET 1: WORK", type: "anchor" },
-    { id: "projects", label: "2: PROJECTS", type: "anchor" },
-    { id: "blog", label: "3: BLOG", type: "route", href: "/blog" },
-    { id: "contact", label: "4: CONTACT", type: "anchor", accent: true },
+const sections = [
+    { id: "experience", label: "Work" },
+    { id: "projects", label: "Projects" },
+    { id: "notes", label: "Notes" },
+    { id: "contact", label: "Contact", accent: true },
 ];
 
 const scrollToSection = (id) => {
@@ -19,16 +19,16 @@ const scrollToSection = (id) => {
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState("experience");
+    const [activeSection, setActiveSection] = useState("");
+    const [pastHero, setPastHero] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === "/" || location.pathname === "";
-    const isBlog = location.pathname.startsWith("/blog");
+    const solid = !isHome || pastHero || isOpen;
 
-    // scroll-spy: highlight the sheet whose section is on screen
+    // scroll-spy: highlight the link whose section is on screen
     useEffect(() => {
         if (!isHome) return undefined;
-        const ids = ["experience", "projects", "contact"];
         const observer = new IntersectionObserver(
             (entries) => {
                 for (const entry of entries) {
@@ -37,52 +37,50 @@ const Navbar = () => {
             },
             { rootMargin: "-30% 0px -60% 0px" }
         );
-        ids.forEach((id) => {
+        sections.forEach(({ id }) => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
         });
         return () => observer.disconnect();
     }, [isHome]);
 
-    const handleSheetClick = (e, sheet) => {
-        if (sheet.type === "route") {
-            setIsOpen(false);
-            return; // Link handles navigation
-        }
+    // transparent over the hero sky, solid once scrolled past it
+    useEffect(() => {
+        if (!isHome) return undefined;
+        const onScroll = () => {
+            const hero = document.getElementById("hero");
+            setPastHero(window.scrollY > (hero ? hero.offsetHeight - 80 : 400));
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [isHome]);
+
+    const handleClick = (e, id) => {
         e.preventDefault();
         setIsOpen(false);
-        if (isHome) {
-            scrollToSection(sheet.id);
-        } else {
-            navigate("/", { state: { scrollTo: sheet.id } });
-        }
+        if (isHome) scrollToSection(id);
+        else navigate("/", { state: { scrollTo: id } });
     };
 
-    const sheetClass = (sheet) => {
-        const base = "font-mono text-[12px] tracking-wide transition-colors";
-        if (sheet.accent) return `${base} font-bold text-blueink hover:text-blueink-soft`;
-        const active =
-            (sheet.type === "route" && isBlog) ||
-            (sheet.type === "anchor" && isHome && activeSection === sheet.id);
-        return active
-            ? `${base} border-b-2 border-blueink pb-0.5 text-ink`
-            : `${base} text-label hover:text-ink`;
-    };
+    const linkClass = (s) =>
+        `text-[14px] font-medium transition-colors hover:text-white ${
+            s.accent || (isHome && activeSection === s.id) ? "text-white" : "text-mute"
+        }`;
 
-    const renderSheet = (sheet) =>
-        sheet.type === "route" ? (
-            <Link key={sheet.id} to={sheet.href} onClick={(e) => handleSheetClick(e, sheet)} className={sheetClass(sheet)}>
-                {sheet.label}
-            </Link>
-        ) : (
-            <a key={sheet.id} href={`#${sheet.id}`} onClick={(e) => handleSheetClick(e, sheet)} className={sheetClass(sheet)}>
-                {sheet.label}
-            </a>
-        );
+    const renderLink = (s) => (
+        <a key={s.id} href={`#${s.id}`} onClick={(e) => handleClick(e, s.id)} className={linkClass(s)}>
+            {s.label}
+        </a>
+    );
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-blueink/35 bg-paper/90 backdrop-blur-md">
-            <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 md:px-12 md:py-5">
+        <nav
+            className={`${isHome ? "fixed inset-x-0" : "sticky"} top-0 z-50 transition-colors duration-300 ${
+                solid ? "border-b border-line bg-night/85 backdrop-blur" : "border-b border-transparent"
+            }`}
+        >
+            <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-6 md:px-14">
                 <Link
                     to="/"
                     onClick={(e) => {
@@ -92,42 +90,35 @@ const Navbar = () => {
                         }
                         setIsOpen(false);
                     }}
-                    className="whitespace-nowrap font-mono text-[13px] font-bold text-blueink hover:text-blueink-soft transition-colors"
+                    className="font-display text-[15px] font-semibold text-star"
                 >
-                    DWG № RDK-2026 · REV C
+                    Rahul Deepak
                 </Link>
 
-                {/* Desktop sheet links */}
-                <div className="hidden items-center gap-7 md:flex">
-                    {sheets.map(renderSheet)}
-                </div>
+                <div className="hidden items-center gap-[30px] md:flex">{sections.map(renderLink)}</div>
 
-                {/* Mobile hamburger */}
-                <div className="md:hidden">
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        aria-label={isOpen ? "Close sheet index" : "Open sheet index"}
-                        aria-expanded={isOpen}
-                        className="-mr-2 p-2 text-blueink transition-colors hover:text-ink"
-                    >
-                        {isOpen ? <FaTimes size={20} aria-hidden="true" /> : <FaBars size={20} aria-hidden="true" />}
-                    </button>
-                </div>
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label={isOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={isOpen}
+                    className="-mr-2 p-2 text-mute transition-colors hover:text-white md:hidden"
+                >
+                    {isOpen ? <FaTimes size={20} aria-hidden="true" /> : <FaBars size={20} aria-hidden="true" />}
+                </button>
             </div>
 
-            {/* Mobile sheet index */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden border-t border-dashed border-blueink/35 bg-paper md:hidden"
+                        className="overflow-hidden border-t border-line md:hidden"
                     >
                         <div className="flex flex-col px-6 py-2">
-                            {sheets.map((sheet) => (
-                                <div key={sheet.id} className="flex border-b border-blueink/15 py-3 last:border-0">
-                                    {renderSheet(sheet)}
+                            {sections.map((s) => (
+                                <div key={s.id} className="flex border-b border-line py-3 last:border-0">
+                                    {renderLink(s)}
                                 </div>
                             ))}
                         </div>
